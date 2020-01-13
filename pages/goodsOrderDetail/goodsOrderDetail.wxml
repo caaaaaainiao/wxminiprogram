@@ -1,0 +1,64 @@
+<view id='container'>
+  <view class='content'>
+    <view>
+      <view class="goods-information">
+        <view class="storename" wx:if="{{info.status == 1 || info.status == 2}}" style="margin-left:50rpx;padding-top: 50rpx;font-weight: bold">领取兑换商品</view>
+        <view class="storename" wx:else style="margin-left:50rpx;padding-top: 50rpx;font-weight: bold">兑换商品</view>
+        <image src="{{info.prizePic}}" class="information-img"></image>
+        <view style="position: relative;margin-left: 50rpx;width:600rpx;">
+          <text class="information-name">{{info.prizeName}}</text>
+          <text class="information-num">X1</text>
+        </view>
+        <view wx:if="{{info.status == 1}}" bindtap='start' class="getbtn">
+          <view class='orderbtn'>
+            <text class="text">领取</text>
+            <image src='/images/orderbtn.png' style="width: 100%;height:100%"></image>
+          </view>
+        </view>
+        <view wx:if="{{info.status == 2}}" class="getbtn">
+          <view class='orderbtn'>
+            <text class="text">已领取</text>
+            <image src='/images/orderbtn.png' class="gray" style="width: 100%;height:100%"></image>
+          </view>
+        </view>
+        <view class="information-tips" wx:if="{{info.status == 1 || info.status == 2}}">*请至领取地点，由工作人员输入核销码后领取</view>
+      </view>
+      <image src='/images/ddbj.png' class='line'></image>
+    </view>
+    <view class='other'>
+      <view class='address'>
+        <view class='storename'>{{info.cinemaName}}</view>
+        <view class='storename' style="color: #878787;font-size:26rpx;">奖品来源：{{info.getMemo}}</view>
+        <view class='storeaddress'>{{info.address}}</view>
+        <image src='/images/phone.png' class='phone' bindtap='phone' data-phone='{{info.concatMobile}}'></image>
+      </view>
+      <view class='address' wx:if="{{info.orderInfo && info.orderInfo != ''}}">
+        <view class='storename1' wx:if="{{info.orderInfo.money && info.orderInfo.money > 0}}">实付金额
+          <text class='money' wx:if="{{info.orderInfo.money && info.orderInfo.money > 0}}">{{info.orderInfo.money}}元</text>
+        </view>
+        <view class='storename1' wx:if="{{info.orderInfo.goldNumber && info.orderInfo.goldNumber > 0}}">实付金币
+          <text class='money' wx:if="{{info.orderInfo.goldNumber && info.orderInfo.goldNumber > 0}}">{{info.orderInfo.goldNumber}}个</text>
+        </view>
+        <view class='descripe'>订单号：{{info.orderInfo.orderNo}}</view>
+        <view class='descripe'>购买时间：{{info.orderInfo.buyDate}}</view>
+        <view class='descripe'>手机号：{{info.orderInfo.mobile}}</view>
+        <view class='descripe'>备注：{{info.orderInfo.remark}}</view>
+      </view>
+      <view class='address' style=' border: none;'>
+        <view class='storename'>兑换商品须知</view>
+        <text class='descripe'>{{info.orderInfo.memo}}</text>
+      </view>
+    </view>
+  </view>
+      <!-- 领取奖品 -->
+  <view class='mask' wx:if="{{userPrize}}">
+    <view class="use-close" bindtap="useClose">
+      <image src="/images/close.png"></image>
+    </view>
+    <view class='use-container'>
+      <text class='use-title'>请至前台由工作人员输入兑换码领取</text>
+      <input class='use-inp' placeholder="输入兑换码" bindinput="getCode"></input>
+      <view class="use-btn" bindtap="exchange">核销</view>
+    </view>
+  </view>
+</view>

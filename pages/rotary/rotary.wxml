@@ -1,0 +1,137 @@
+<!--pages/rotary.wxml-->
+<!-- <text>pages/rotary.wxml</text> -->
+<view id="container">
+  <image src="{{prize.imageUrl}}" class="rotary-bg" wx:if="{{prize.imageUrl && prize.imageUrl != ''}}"></image>
+  <image src="/images/rotary-bg.png" class='rotary-bg' wx:else></image>
+  <view class="content">
+    <!-- 左上一  一等奖-->
+    <view class='prize {{index==1?"select":""}}'>
+      <view class='prize-img'>
+        <image src="{{prizeInfo.firstPrize.prizePicture}}"></image>
+      </view>
+      <text class='prize-text'>{{prizeInfo.firstPrize.prizeName}}</text>
+    </view>
+    <!-- 左上二  六等奖-->
+    <view class='prize {{index==2?"select":""}}'>
+      <view class='prize-img'>
+        <image src="{{prizeInfo.sixthPrize.prizePicture}}"></image>
+      </view>
+      <text class='prize-text'>{{prizeInfo.sixthPrize.prizeName}}</text>
+    </view>
+    <!-- 右上一  二等奖-->
+    <view class='prize {{index==3?"select":""}}'>
+      <view class='prize-img'>
+        <image src="{{prizeInfo.secondPrize.prizePicture}}"></image>
+      </view>
+      <text class='prize-text'>{{prizeInfo.secondPrize.prizeName}}</text>
+    </view>
+    <!-- 左一  五等奖-->
+    <view class='prize {{index==8?"select":""}}'>
+      <view class='prize-img'>
+        <image src="{{prizeInfo.fifthPrize.prizePicture}}"></image>
+      </view>
+      <text class='prize-text'>{{prizeInfo.fifthPrize.prizeName}}</text>
+    </view>
+    <!-- 开始 -->
+    <view>
+      <image src="/images/rotary-start.png" class='rotary-start' bindtap="start"></image>
+    </view>
+    <!-- 右一  七等奖-->
+    <view class='prize {{index==4?"select":""}}'>
+      <view class='prize-img'>
+        <image src="{{prizeInfo.seventhPrize.prizePicture}}"></image>
+      </view>
+      <text class='prize-text'>{{prizeInfo.seventhPrize.prizeName}}</text>
+    </view>
+    <!-- 左下一  四等奖-->
+    <view class='prize {{index==7?"select":""}}'>
+      <view class='prize-img'>
+        <image src="{{prizeInfo.fourthPrize.prizePicture}}"></image>
+      </view>
+      <text class='prize-text'>{{prizeInfo.fourthPrize.prizeName}}</text>
+    </view>
+    <!-- 左下二  八等奖-->
+    <view class='prize {{index==6?"select":""}}'>
+      <view class='prize-img'>
+        <image src="{{prizeInfo.eighthPrize.prizePicture}}"></image>
+      </view>
+      <text class='prize-text'>{{prizeInfo.eighthPrize.prizeName}}</text>
+    </view>
+    <!-- 右下一  三等奖-->
+    <view class='prize {{index==5?"select":""}}'>
+      <view class='prize-img'>
+        <image src="{{prizeInfo.thirdPrize.prizePicture}}"></image>
+      </view>
+      <text class='prize-text'>{{prizeInfo.thirdPrize.prizeName}}</text>
+    </view>
+  </view>
+  <text class='rotary-rule' bindtap="rule">抽奖规则</text>
+  <text class='rotary-myprize' bindtap="check">我的奖品</text>
+
+  <!-- 抽奖规则 -->
+  <view class='mask' wx:if="{{rule}}">
+    <view class="rule-close" bindtap="close">
+      <image src="/images/close.png"></image>
+    </view>
+    <view class='rule-container'>
+      <text class='rule-title'>抽奖规则</text>
+      <scroll-view scroll-y='true' class='rule-context'>
+        <text>{{prize.gameRule}}</text>
+      </scroll-view>
+    </view>
+  </view>
+
+  <!-- 中奖提示 -->
+  <view class='mask' wx:if="{{winning}}">
+    <view class='winning-container' wx:if="{{drawPrize}}">
+      <image src="{{drawPrize.prizePicture}}" class='winning-img'></image>
+      <text class='winning-text'>恭喜您已获得</text>
+      <text class='winning-name'>{{drawPrize.prizeName}}</text>
+      <text class='winning-tips'>请查看奖品列表，或进入个人中心查看。并请尽快领取使用哦~</text>
+      <button class='winning-btn' bindtap="got">知道了</button>
+    </view>
+    <view class='winning-container' wx:else>
+      <text class='winning-text'>很遗憾，您未中奖，请下次参与</text>
+      <button class='winning-btn' bindtap="got">知道了</button>
+    </view>
+  </view>
+
+  <!-- 我的奖品 -->
+  <view class="mask" wx:if="{{prizeShow}}">
+    <view class='myPrize-container'>
+      <text class='myPrize-title'>我的奖品</text>
+      <scroll-view class='myPrize-list' bindscrolltolower="searchScrollLower" scroll-y="true" wx:if="{{prizeList.length > 0}}">
+        <view class='myPrize-item' wx:for="{{prizeList}}" wx:for-index="index" wx:for-item="item">
+          <image src="{{item.prizePicture}}" class='item-img'></image>
+          <view class='item-name'>{{item.prizeName}}</view>
+          <view class='item-time'>有效期至：{{item.expireDate}}</view>
+          <view class='line'></view>
+          <view class='item-status' data-id="{{item.prizeId}}" data-status="{{item.status}}" data-type="{{item.prizeType}}" wx:if="{{item.status == 1 && item.prizeType == 1}}" bindtap="use">去使用</view>
+          <view class='item-status' data-id="{{item.prizeId}}" data-status="{{item.status}}" data-type="{{item.prizeType}}" wx:if="{{item.status == 1 && item.prizeType == 2}}" bindtap="use">领取</view>
+          <view class='item-status' wx:if="{{item.status == 2 && item.prizeType == 1}}">已使用</view>
+          <view class='item-status' wx:if="{{item.status == 2 && item.prizeType == 2}}">已领取</view>
+          <view class='item-status' wx:if="{{item.status == 3}}">已过期</view>
+        </view>
+      </scroll-view>
+      <view class="empty" wx:else>
+        <image src="/images/no-prize.png" role="img"></image>
+        <view class="emptytext">亲，没有奖品哦～</view>
+      </view>
+    </view>
+    <view bindtap="cancel" class='myPrize-close'>
+      <image src="/images/close.png"></image>
+    </view>
+  </view>
+
+  <!-- 领取奖品 -->
+  <view class='mask' wx:if="{{userPrize}}">
+    <view class="use-close" bindtap="useClose">
+      <image src="/images/close.png"></image>
+    </view>
+    <view class='use-container'>
+      <text class='use-title'>请至前台由工作人员输入兑换码领取</text>
+      <input class='use-inp' placeholder="输入兑换码" bindinput="getCode"></input>
+      <view class="use-btn" bindtap="exchange">核销</view>
+    </view>
+  </view>
+</view>

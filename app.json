@@ -1,0 +1,105 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/waitPay/waitPay",
+    "pages/orderForm/orderForm",
+    "pages/sell/sell",
+    "pages/mine/mine",
+    "pages/movie/movie",
+    "pages/gold/gold",
+    "pages/sellDetail/sellDetail",
+    "pages/login/login",
+    "pages/compare/compare",
+    "pages/accredit/accredit",
+    "pages/movieDetail/movieDetail",
+    "pages/success/success",
+    "pages/foodOrderDetail/foodOrderDetail",
+    "pages/orderDetail/orderDetail",
+    "pages/myticket/myticket",
+    "pages/myfood/myfood",
+    "pages/mycoupon/mycoupon",
+    "pages/myprize/myprize",
+    "pages/chooseSeats/chooseSeats",
+    "pages/foodOrder/foodOrder",
+    "pages/seenMovie/seenMovie",
+    "pages/commentmovie/commentmovie",
+    "pages/wantsee/wantsee",
+    "pages/hotActivity/hotActivity",
+    "pages/common/common",
+    "pages/foodSuccess/foodSuccess",
+    "pages/room/room",
+    "pages/cardRecord/cardRecord",
+    "pages/suggestion/suggestion",
+    "pages/comments/comments",
+    "pages/acivityUrl/acivityUrl",
+    "pages/couponDetail/couponDetail",
+    "pages/mycard/mycard",
+    "pages/openCard/openCard",
+    "pages/mallDetail/mallDetail",
+    "pages/orderGoods/orderGoods",
+    "pages/goodsOrderDetail/goodsOrderDetail",
+    "pages/signIn/signIn",
+    "pages/rotary/rotary",
+    "pages/exchange/exchange",
+    "pages/share/share",
+    "pages/phoneYZM/phoneYZM",
+    "pages/equityCard/equityCard",
+    "pages/submitOrder/submitOrder",
+    "pages/exchangeDetail/exchangeDetail",
+    "pages/myGold/myGold",
+    "pages/equityCardRecord/equityCardRecord",
+    "pages/cinemaDetail/cinemaDetail",
+    "pages/logistics/logistics",
+    "pages/poster/poster"
+  ],
+  "window": {
+    "backgroundColor": "rgba(33, 119, 185, 1)",
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#009FFF",
+    "navigationBarTitleText": "",
+    "navigationBarTextStyle": "white"
+  },
+  "tabBar": {
+    "selectedColor": "#EC2F4B",
+    "backgroundColor": "#fff",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "比价",
+        "iconPath": "images/bar/index-0.png",
+        "selectedIconPath": "images/bar/index-1.png"
+      },
+      {
+        "pagePath": "pages/sell/sell",
+        "text": "卖品",
+        "iconPath": "images/bar/sell-0.png",
+        "selectedIconPath": "images/bar/sell-1.png"
+      },
+      {
+        "pagePath": "pages/gold/gold",
+        "text": "金币商城",
+        "iconPath": "images/bar/gold-0.png",
+        "selectedIconPath": "images/bar/gold-1.png"
+      },
+      {
+        "pagePath": "pages/movie/movie",
+        "text": "游戏厅",
+        "iconPath": "images/bar/game-0.png",
+        "selectedIconPath": "images/bar/game-1.png"
+      },
+      {
+        "pagePath": "pages/mine/mine",
+        "text": "我的",
+        "iconPath": "images/bar/mine-0.png",
+        "selectedIconPath": "images/bar/mine-1.png"
+      }
+    ]
+  },
+  "permission": {
+    "scope.userLocation": {
+      "desc": "你的位置信息将用于小程序获取最近影院"
+    }
+  },
+  "sitemapLocation": "sitemap.json"
+}

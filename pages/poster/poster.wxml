@@ -1,0 +1,123 @@
+<!--pages/poster.wxml-->
+<!-- <text>pages/poster.wxml</text> -->
+<view class="container">
+  <view class="content">
+    <view class="poster" wx:if="{{mode == 1}}">
+      <image class="poster-img" src="/images/equityCard-head.png"></image>
+      <view class="poster-content">
+        <view class="poster-head">
+          <view class="poster-title">少年的你</view>
+          <view class="starList">
+            <block wx:for="{{stars}}" wx:for-item="item" wx:key="index">
+              <image class="star-image" src="{{key > item ?(key-item == 0.5?halfSrc:selectedSrc) : normalSrc}}"></image>
+            </block>
+            <view class="score">
+              <view style="color:#EC2F4B">7分</view>
+            </view>
+          </view>
+        </view>
+        <view class="poster-body">
+          <view>看了电影首映 两位主演演得很出彩 各种情绪和无助感体现很到位 让我很有共情 四字弟弟的表演很惊喜 和小黄鸭搭档没有输 曾国祥导演的叙事能力还是很赞 五分！！</view>
+        </view>
+        <view class="poster-foot">
+          <view class="poster-foot-info">
+            <image class="poster-code" src="/images/face.png"></image>
+            <view class="poster-user">
+              <view class="poster-userInfo">
+                <image class="poster-userInfo-img" src="/images/face.png"></image>
+                <view class="poster-userInfo-name">微信昵称</view>
+              </view>
+              <view class="poster-user-time">2019年10月30日</view>
+            </view>
+          </view>
+        </view>
+        <view class="poster-foot-cinemaName">万画筒影城</view>
+      </view>
+    </view>
+    <view class="poster2" wx:if="{{mode == 2}}">
+      <view class="poster2-head">
+        <image class="poster2-img" src="/images/equityCard-head.png"></image>
+        <view class="poster2-user">
+          <image class="poster2-user-img" src="/images/face.png"></image>
+          <view class="poster2-userInfo">
+            <view class="poster2-userInfo-time">2019年10月30日</view>
+            <view class="poster2-userInfo-name">微信昵称</view>
+          </view>
+        </view>
+        <view class="poster2-name">少年的你</view>
+      </view>
+      <view class="starList2">
+        <block wx:for="{{stars}}" wx:for-item="item" wx:key="index">
+          <image class="star2-image" src="{{key > item ?(key-item == 0.5?halfSrc:selectedSrc) : normalSrc}}"></image>
+        </block>
+        <view class="score">
+          <view style="color:#EC2F4B">7分</view>
+        </view>
+      </view>
+      <image class="poster2-code" src="/images/face.png"></image>
+      <view class="poster2-body">
+        <view>看了电影首映 两位主演演得很出彩 各种情绪和无助感体现很到位 让我很有共情 四字弟弟的表演很惊喜 和小黄鸭搭档没有输 曾国祥导演的叙事能力还是很赞 五分！！</view>
+      </view>
+      <view class="poster2-cinemaName">万画筒影城</view>
+    </view>
+    <view class="poster3" wx:if="{{mode == 3}}">
+      <view class="poster3-head">
+        <view class="poster3-cinemaName">万画筒影城</view>
+        <image class="poster3-img" src="/images/equityCard-head.png"></image>
+        <view class="poster3-name">少年的你</view>
+      </view>
+      <view class="poster3-content">
+        <view class="poster3-user">
+          <image class="poster3-user-img" src="/images/face.png"></image>
+          <view class="poster3-userInfo">
+            <view class="poster3-userInfo-time">2019年10月30日</view>
+            <view class="poster3-userInfo-name">微信昵称</view>
+          </view>
+        </view>
+        <view class="poster3-body">
+          看了电影首映 两位主演演得很出彩 各种情绪和无助感体现很到位 让我很有共情 四字弟弟的表演很惊喜 和小黄鸭搭档没有输 曾国祥导演的叙事能力还是很赞 五分！！
+        </view>
+        <view class="starList3">
+          <block wx:for="{{stars}}" wx:for-item="item" wx:key="index">
+            <image class="star3-image" src="{{key > item ?(key-item == 0.5?halfSrc:selectedSrc) : normalSrc}}"></image>
+          </block>
+          <view class="score">
+            <view style="color:#EC2F4B">7分</view>
+          </view>
+        </view>
+        <image class="poster3-code" src="/images/face.png"></image>
+      </view>
+    </view>
+    <view class="forwarding">
+      <view class="left" bindtap="changeMode">
+        <image class="left-img" src="/images/share-template.png"></image>
+        <view>更换模板</view>
+      </view>
+      <view class="right" bindtap="saveImage">
+        <image class="right-img" src="/images/share-poster.png"></image>
+        <view>保存分享</view>
+      </view>
+    </view>
+    <painter style="position: absolute; margin:auto;" palette="{{template}}" bind:imgOK="onImgOK" />
+    <view class='black' wx:if="{{showMode}}">
+      <view class='change'>
+        <view class="mode1" bindtap="chooseMode" data-mode="1">
+          <image src="/images/mode1.png" class="mode1-img"></image>
+          <image src="/images/mode-select.png" class="choose-btn" wx:if="{{mode == 1}}"></image>
+          <view class="choose-btn" wx:else></view>
+        </view>
+        <view class="mode2" bindtap="chooseMode" data-mode="2">
+          <image src="/images/mode2.png" class="mode2-img"></image>
+          <image src="/images/mode-select.png" class="choose-btn" wx:if="{{mode == 2}}"></image>
+          <view class="choose-btn" wx:else></view>
+        </view>
+        <view class="mode3" bindtap="chooseMode" data-mode="3">
+          <image src="/images/mode3.png" class="mode3-img"></image>
+          <image src="/images/mode-select.png" class="choose-btn" wx:if="{{mode == 3}}"></image>
+          <view class="choose-btn" wx:else></view>
+        </view>
+      </view>
+      <view class="change-btn" bindtap="sureMode">确 定</view>
+    </view>
+  </view>
+</view>

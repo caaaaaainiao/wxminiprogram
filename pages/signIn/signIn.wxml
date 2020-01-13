@@ -1,0 +1,168 @@
+<!--pages/signIn.wxml-->
+<!-- <text>pages/signIn.wxml</text> -->
+<scroll-view class="container" bindscrolltolower="searchScrollLower" scroll-y="true">
+  <!-- <view class='container'> -->
+    <view class='everyday-signin'>
+      <view class='signin-title'>
+        <image src="/images/dot2.png"></image>
+        <text>每日签到</text>
+      </view>
+      <view class='signin-img' wx:if="{{banner.length>0}}">
+        <swiper autoplay="true" interval="5000" style="height: 100%">
+          <block wx:for="{{banner}}" wx:for-item="item">
+            <swiper-item>
+              <image bindtap="bannerRouter" src='{{item.imageUrl}}' data-type='{{item.redirectType}}' data-goal='{{item.redirectGoal}}' class="bg"></image>
+            </swiper-item>
+          </block>
+        </swiper>
+      </view>
+      <!-- <image src="/images/integral-signin.png" class='signin-img' wx:else></image> -->
+      <view class='signin-content'>
+        <view class='signin-text'>
+          已连续签到
+          <text style='color:#EC2F4B;font-size:40rpx;'>{{sigininDay}}</text> 天
+        </view>
+        <view class='signin-tips' wx:if="{{signinRule.prizeStatus==2}}">
+          <image src="/images/gift-tips.png"></image>
+          <text>点击领取大奖</text>
+        </view>
+        <view class='signin-context'>
+          <view class='signin-num'>
+            <view>
+              <text>+{{signinRule.dayOne}}</text>
+              <image src="/images/my-gold.png"></image>
+            </view>
+            <view>
+              <text>+{{signinRule.dayTwo}}</text>
+              <image src="/images/my-gold.png"></image>
+            </view>
+            <view>
+              <text>+{{signinRule.dayThree}}</text>
+              <image src="/images/my-gold.png"></image>
+            </view>
+            <view>
+              <text>+{{signinRule.dayFour}}</text>
+              <image src="/images/my-gold.png"></image>
+            </view>
+            <view>
+              <text>+{{signinRule.dayFive}}</text>
+              <image src="/images/my-gold.png"></image>
+            </view>
+            <view>
+              <text>+{{signinRule.daySix}}</text>
+              <image src="/images/my-gold.png"></image>
+            </view>
+            <view wx:if='{{!signinRule.extraPrize || signinRule.extraPrize == ""}}'>
+              <text>+{{signinRule.daySeven}}</text>
+              <image src="/images/my-gold.png" style="width:32rpx;height:32rpx;"></image>
+            </view>
+            <view wx:else>
+              <image src="/images/signin-gift.png" class='{{signinRule.prizeStatus==2?"around animated":""}}' style="width:36rpx;height:36rpx;" bindtap="getPrize"></image>
+            </view>
+          </view>
+          <view class='signin-bar'>
+            <view>
+              <image src="/images/select-day.png" wx:if="{{signinRule.continuesDays>=1}}"></image>
+              <image src="/images/unselect-day.png" wx:else></image>
+            </view>
+            <view>
+              <image src="/images/select-day.png" wx:if="{{signinRule.continuesDays>=2}}"></image>
+              <image src="/images/unselect-day.png" wx:else></image>
+            </view>
+            <view>
+              <image src="/images/select-day.png" wx:if="{{signinRule.continuesDays>=3}}"></image>
+              <image src="/images/unselect-day.png" wx:else></image>
+            </view>
+            <view>
+              <image src="/images/select-day.png" wx:if="{{signinRule.continuesDays>=4}}"></image>
+              <image src="/images/unselect-day.png" wx:else></image>
+            </view>
+            <view>
+              <image src="/images/select-day.png" wx:if="{{signinRule.continuesDays>=5}}"></image>
+              <image src="/images/unselect-day.png" wx:else></image>
+            </view>
+            <view>
+              <image src="/images/select-day.png" wx:if="{{signinRule.continuesDays>=6}}"></image>
+              <image src="/images/unselect-day.png" wx:else></image>
+            </view>
+            <view>
+              <image src="/images/select-day.png" wx:if="{{signinRule.continuesDays>=7}}"></image>
+              <image src="/images/unselect-day.png" wx:else></image>
+            </view>
+          </view>
+          <view class='signin-day'>
+            <text>1天</text>
+            <text>2天</text>
+            <text>3天</text>
+            <text>4天</text>
+            <text>5天</text>
+            <text>6天</text>
+            <text>7天</text>
+          </view>
+        </view>
+        <view class='signin-btn' wx:if="{{signinRule.signStatus == 1}}" bindtap="siginin">
+          <text>签到</text>
+        </view>
+        <view class='signin-ready' wx:else>
+          <text>已签到</text>
+        </view>
+      </view>
+    </view>
+    <view class='line'></view>
+    <view class='recommended'>
+      <view class='recommended-title'>
+        <image src="/images/dot2.png"></image>
+        <text>精选推荐</text>
+      </view>
+      <view class='content-data'>
+        <view class="item" wx:for="{{goodsList}}" wx:for-index="index" wx:for-item="item">
+          <view class="item-details" bindtap="check" data-id="{{item.id}}">
+            <image src="{{item.imageUrl}}" class="item-img"></image>
+            <view class="item-name">{{item.name}}</view>
+            <view class="item-price">
+              <view wx:if="{{item.gold}}">
+                {{item.gold}}
+                <image src="/images/my-gold.png" class='item-gold-img'></image>
+              </view>
+              <view wx:if="{{item.or}}">
+                /
+              </view>
+              <view wx:if="{{item.price.lessgold}}">
+                {{item.price.lessgold}}
+                <image src="/images/my-gold.png" class='item-gold-img'></image>
+              </view>
+              <view wx:if="{{item.and}}">
+                +
+              </view>
+              <view wx:if="{{item.money}}">
+                ￥{{item.money}}
+              </view>
+            </view>
+            <view class='old-price' wx:if="{{item.originalPrice}}">
+              ￥{{item.originalPrice}}
+            </view>
+            <!-- <view class='item-btn'>
+              立即兑换
+            </view> -->
+          </view>
+        </view>
+      </view>
+      <view class='line2'></view>
+    </view>
+    <!-- 领取成功 -->
+    <view class='mask' wx:if="{{winning}}">
+      <view class='winning-container'>
+        <view class="rule-close" bindtap="close">
+          <image src="/images/close.png"></image>
+        </view>
+        <view class='winning-title'>
+          <image src="/images/dot2.png"></image>
+          <text>领取成功</text>
+        </view>
+        <view class='winning-content'>
+          {{prize}}
+        </view>
+      </view>
+    </view>
+  <!-- </view> -->
+</scroll-view>

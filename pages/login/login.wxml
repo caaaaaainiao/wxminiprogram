@@ -1,0 +1,48 @@
+<!--pages/login/login.wxml-->
+<view class="container">
+  <image wx:if='{{iskey}}' class='logo' src='{{logo}}'></image>
+  <image class='film' src='https://whtxcx.oss-cn-hangzhou.aliyuncs.com/min/film.png'></image>
+  <view wx:if="{{canIUse}}">
+    <button open-type="getUserInfo" bindgetuserinfo="authLogin" class='signIn' wx:if="{{getInfo==0}}">
+      <image src='/images/accreditbtn.png'></image>
+    </button>
+    <!-- 选择城市 -->
+    <view class='choosearea' wx:else>
+      <view class='top'>请选择绑定的影院</view>
+      <view class='city'>
+        <block wx:for="{{nowCity}}" wx:for-item="city" wx:key="city">
+          <text data-name="{{city.name}}" class='{{city.name == currentCity?"selectCity":""}}' bindtap='chooseCity'>{{city.show}}</text>
+        </block>
+      </view>
+      <view class='cinema'>
+        <block wx:for="{{allCinemas}}" wx:for-item="area" wx:key="area">
+          <view class='option' data-index='{{index}}' data-cinemaName='{{area.cinemaName}}' data-cinemaCode='{{area.cinemaCode}}' data-issnack='{{area.isSnackDistribution}}' bindtap='chooseCinema' data-address='{{area.address}}'>
+            <view class='choosename {{area.cinemaCode == currentCode?"selectCinema":""}}'>{{area.cinemaName}}</view>
+            <view class='chooseArea {{area.cinemaCode == currentCode?"selectCinema":""}}'>{{area.address}}</view>
+            <view class='distance {{area.cinemaCode == currentCode?"selectCinema":""}}'>{{area.distance}}km</view>
+          </view>
+        </block>
+      </view>
+      <view>
+        <view class='bottom'>请确认注册影城，谨慎操作</view>
+        <button open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber" class='signIn'>
+          <image src='/images/registerBtn.png'></image>
+          <text>一键授权</text>
+        </button>
+        <view bindtap="otherPhoneNumber" class='otherSignIn'>
+          手机号输入注册
+        </view>
+      </view>
+    </view> 
+  </view>
+  <block wx:else>
+    <view>微信版本过低，请升级后使用</view>
+  </block>
+</view>
+
+<!-- 优惠券弹窗 -->
+<view class="img" wx:if="{{!modalHidden}}" bindtap="modalCandel">
+  <view catchtap="modalConfirm" class="hiddenImg">
+    <image src="{{image}}"></image>
+  </view>
+</view>

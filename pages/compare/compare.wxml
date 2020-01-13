@@ -1,0 +1,127 @@
+<!--pages/compare/compare.wxml-->
+<!-- <text>pages/compare/compare.wxml</text> -->
+<view class='container'>
+  <image class='bannerbg' src='/images/indexbanner.png'></image>
+  <swiper display-multiple-items="0.85" previous-margin="285rpx" next-margin="285rpx" current="{{swiperIndex}}" class='swiper-block' bindchange="swiperChange">
+    <block wx:for="{{moviesList}}" wx:index="{{index}}" wx:key="movie" wx:for-item="movie">
+      <swiper-item class="swiper-item">
+        <image src='{{movie.imageUrl}}' class="slide-image {{swiperIndex == index ? 'active' : ''}}" bindtap='toDetail' data-movieCode='{{movie.filmCode}}' data-index='{{index}}'></image>
+      </swiper-item>
+    </block>
+  </swiper>
+  <view class='check'></view>
+  <view class='movieDetail'>
+    <view class='movieName'>{{movieInfo.filmName}}</view>
+    <view class='movieMessage'>{{movieInfo.duration}}分钟 | {{movieInfo.filmType}} | {{movieInfo.actors}}
+    </view>
+  </view>
+  <scroll-view scroll-x class='dates'>
+    <block wx:for="{{movieDateList}}" wx:for-item="date" wx:key="date">
+      <view class='date {{select == index?"select":""}}' data-index="{{index}}" data-text="{{date}}" bindtap='dayChange'>{{date.key}}
+        <!-- <view wx:if="{{select == index && activityList[select].value.length>0}}" class='preference'>惠</view> -->
+        <view wx:if="{{activityList[index].value.length>0}}" class='preference'>惠</view>
+      </view>
+    </block>
+  </scroll-view>
+  <scroll-view scroll-y wx:if="{{activityList[select].value.length>0}}" class="activityDesc">
+    <block wx:for='{{activityList[select].value}}' wx:for-item="item" wx:key="item">
+      <view class="activityInfo">
+        <view class='preference'>惠</view>
+        {{item}}
+      </view>
+    </block>
+  </scroll-view>
+  <view wx:if="{{movieDateList[select].value.length>0}}">
+    <block wx:for="{{movieDateList[select].value}}" wx:for-item="item" wx:key="item">
+      <view class='session' data-index="{{index}}" catchtap='checkSession'>
+        <view class='time'>
+          <view class='session_top'>
+            <text class='start_time'>{{item.playTime}}</text>
+          </view>
+          <view class="session_activity" wx:if="{{item.activityType && item.activityType == 1}}">见面会</view>
+          <view class="session_activity2" wx:if="{{item.activityType && item.activityType == 2}}">点映</view>
+          <text class='session_bottom'>{{item.overTime}}散场</text>
+        </view>
+        <view class='address'>
+          <view class='session_top'>
+            <view style='line-height:40rpx;margin-top:13%; text-overflow: ellipsis;overflow: hidden;white-space: nowrap'>
+              <text class='movie_type'>{{item.language}} {{item.format}}</text>
+            </view>
+            <view style='line-height:40rpx;margin-top:10%; text-overflow: ellipsis;overflow: hidden;white-space: nowrap'>
+              <text class='movie_type'>{{item.screenName}}</text>
+            </view>
+          </view>
+        </view>
+        <view class='price'>
+          <view class='session_top'>
+            <image src='{{logo}}'></image>
+            <view class='minPrice'>
+              <text>￥</text>
+              <text class='num' wx:if="{{item.activityPrice}}">{{item.activityPrice}}</text>
+              <text class='num' wx:else>{{item.price}}</text>
+            </view>
+          </view>
+          <view class='session_bottom'>
+            <image src="/images/more.png"></image>
+            <text>多家比价</text>
+          </view>
+        </view>
+        <view class='btns'>
+          <view class='buy' wx:if="{{item.activityPrice}}" data-index="{{index}}" data-sessionCode="{{item.sessionCode}}" data-screenCode="{{item.screenCode}}" data-desc="{item.activityDesc}}" catchtap='buy'>特惠</view>
+          <view class='buy' wx:else data-index="{{index}}" data-sessionCode="{{item.sessionCode}}" data-screenCode="{{item.screenCode}}" data-desc="{item.activityDesc}}" catchtap='buy'>购票</view>
+          <view class="originalPrice" wx:if="{{item.activityPrice}}">￥{{item.price}}</view>
+        </view>
+        <view class='node'></view>
+        <view data-index='{{index}}' wx:if="{{index == selectedIndex}}">
+          <block wx:for="{{item.comparePricesList}}" wx:for-item="comparePrices" wx:key="comparePrices">
+            <view class='others'>
+              <view class='store'>
+                <image src='{{logo}}' wx:if="{{comparePrices.plateType==1}}"></image>
+                <image src='/images/rmlogo.png' wx:elif="{{comparePrices.plateType==46}}"></image>
+                <image src='/images/mylogo.png' wx:elif="{{comparePrices.plateType==36}}"></image>
+                <image src='/images/tpplogo.png' wx:elif="{{comparePrices.plateType==49}}"></image>
+                <text wx:if="{{comparePrices.plateType==1}}">影城会员</text>
+                <text wx:elif="{{comparePrices.plateType==46}}">百度糯米</text>
+                <text wx:elif="{{comparePrices.plateType==36}}">猫眼</text>
+                <text wx:elif="{{comparePrices.plateType==49}}">淘票票</text>
+                <view class='nowPrice'>
+                  <text>￥</text>
+                  <text wx:if="{{comparePrices.memberActivityPrice && comparePrices.plateType==1}}" class='num'>{{comparePrices.memberActivityPrice}}</text>
+                  <text wx:else class='num'>{{comparePrices.platePrice}}</text>
+                  <text class="qi" wx:if="{{comparePrices.plateType==1}}">  起</text>
+                </view>
+                <!-- <view wx:if="{{item.activityPrice && comparePrices.plateType==1}}" class='buy' data-index="{{index}}" data-num="{{session.featureAppNo}}" data-screencode="{{session.screenCode}}" data-typeCode='{{comparePrices.plateType}}' data-code="{{session.qmmComparePrices[index].dataType}}" catchtap='buyMoer'>特惠</view> -->
+                <view class='buy' data-index="{{index}}" data-num="{{session.featureAppNo}}" data-screencode="{{session.screenCode}}" data-typeCode='{{comparePrices.plateType}}' data-code="{{session.qmmComparePrices[index].dataType}}" catchtap='buyMoer'>购票</view>
+              </view>
+            </view>
+          </block>
+        </view>
+      </view>
+    </block>
+  </view>
+  <block wx:else>
+    <view class='empty'>
+      <image src='https://whtxcx.oss-cn-hangzhou.aliyuncs.com/min/empty1.png'></image>
+      <view class='emptytext' wx:if="{{isLoading}}">加载中~</view>
+      <view class='emptytext' wx:else>亲，没有电影放映哦～</view>
+    </view>
+  </block>
+  <view class='black' wx:if="{{showTask}}">
+    <view class='black_content'>
+      <view class='text'>您还有订单未支付</view>
+      <view class='cancel' bindtap='cancel'>取消订单</view>
+      <view class='sure' bindtap='sure'>继续支付</view>
+    </view>
+  </view>
+  <!-- 其他平台提示 -->
+  <view class='tip' wx:if="{{buyNum == 36}}" bindtap='hideTip'>
+    <image src='https://whtxcx.oss-cn-hangzhou.aliyuncs.com/min/tipmy.jpg'></image>
+  </view>
+  <view class='tip' wx:if="{{buyNum == 46}}" bindtap='hideTip'>
+    <image src='https://whtxcx.oss-cn-hangzhou.aliyuncs.com/min/tipbdrm.jpg'></image>
+  </view>
+  <view class='tip' wx:if="{{buyNum == 49}}" bindtap='hideTip'>
+    <image src='https://whtxcx.oss-cn-hangzhou.aliyuncs.com/min/tiptpp.jpg'></image>
+  </view>
+  <view class='fixed'>第三方渠道票价仅作比价参考，可能部分价格会存在误差。</view>
+</view>

@@ -1,0 +1,45 @@
+<!--pages/myprize/myprize.wxml-->
+<!-- <text>pages/myprize/myprize.wxml</text> -->
+<!-- 我的奖品 -->
+<scroll-view class='container' scroll-y="true" wx:if="{{result.length > 0}}" bindscrolltolower="searchScrollLower">
+  <block wx:for="{{result}}" wx:for-item="prize" wx:key="prize">
+    <view class='prize {{prize.status==5 || prize.status==6 || prize.status==7 || prize.status==8?"height":""}}' bindtap="toDetail" data-id='{{prize.prizeId}}' data-status='{{prize.status}}'>
+      <image class='icon' src='{{prize.imageUrl}}'></image>
+      <view class='{{prize.status==5 || prize.status==6 || prize.status==7 || prize.status==8?"delivery":"name"}}'>{{prize.prizeName}}</view>
+      <view class='scope' wx:if="{{prize.status==1 || prize.status==2 || prize.status==3 || prize.status==4}}">门店：{{prize.cinemaName}}</view>
+      <view class='time' wx:if="{{prize.status==1 || prize.status==2 || prize.status==3 || prize.status==4}}">截至：{{prize.overDate}}</view>
+      <view class='right'>
+        <image wx:if='{{prize.status==1}}' data-id='{{prize.prizeId}}' catchtap="lingqu" src='/images/status.png' class='status'></image>
+        <image wx:if='{{prize.status==2}}' src='/images/yifafang.png' class='status'></image>
+        <image src='/images/conponStatus.png' wx:if="{{prize.status == 3}}" class='status'></image>
+        <image src='/images/sales.png' wx:if="{{prize.status == 4}}" class='status'></image>
+        <image src='/images/sendGood.png' wx:if="{{prize.status == 5}}" class='status'></image>
+        <image src='/images/waitGood.png' wx:if="{{prize.status == 6}}" class='status'></image>
+        <image src='/images/getGood.png' wx:if="{{prize.status == 7}}" class='status'></image>
+        <image src='/images/gotGood.png' wx:if="{{prize.status == 8}}" class='status'></image>
+      </view>
+      <view class="bottom" catchtap="toLog" data-id='{{prize.prizeId}}' wx:if="{{prize.status==5 || prize.status==6 || prize.status==7 || prize.status==8}}">
+        <view class="delivery-info">
+          收货信息：{{prize.deliveryName}},{{prize.deliveryMobile}},{{prize.deliveryAddress}}
+        </view>
+        <view class="logistics">查看物流</view>
+      </view>
+    </view>
+  </block>
+
+    <!-- 领取奖品 -->
+  <view class='mask' wx:if="{{userPrize}}">
+    <view class="use-close" bindtap="useClose">
+      <image src="/images/close.png"></image>
+    </view>
+    <view class='use-container'>
+      <text class='use-title'>请至前台由工作人员输入核销码领取</text>
+      <input class='use-inp' placeholder="输入核销码" bindinput="getCode"></input>
+      <view class="use-btn" bindtap="exchange">核销</view>
+    </view>
+  </view>
+</scroll-view>
+<view class='empty' wx:else>
+  <image src='https://whtxcx.oss-cn-hangzhou.aliyuncs.com/min/empty4.png'></image>
+  <view class='emptytext'>亲，没有奖品哦～</view>
+</view>

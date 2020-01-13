@@ -1,0 +1,21 @@
+<!--pages/exchangeDetail.wxml-->
+<!-- <text>pages/exchangeDetail.wxml</text> -->
+<scroll-view class='container' bindscrolltolower="searchScrollLower" scroll-y="true" wx:if="{{result.length > 0}}">
+  <view class='line'></view>
+  <block wx:for="{{result}}" wx:for-item="item" wx:key="item">
+    <view class="exchange-list">
+      <view class='use-integral'>积分：
+        <text style="color:rgba(43,43,43,1);font-size:30rpx;">-{{item.useCredits}}</text>
+      </view>
+      <text class='use-time'>{{item.exchangeDate}}</text>
+      <view class='get-goldNum'>
+        <image src="/images/my-gold.png" style="width:18px;height:18px;margin-right: 10rpx;"></image>
+        <text>{{item.exchangeGoldNumber}}</text>
+      </view>
+    </view>
+  </block>
+</scroll-view>
+<view class='empty' wx:else>
+  <image src='https://whtxcx.oss-cn-hangzhou.aliyuncs.com/min/empty1.png '></image>
+  <view class='emptytext '>亲，没有兑换记录哦～</view>
+</view>

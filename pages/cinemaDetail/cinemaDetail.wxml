@@ -1,0 +1,35 @@
+<!--pages/cinemaDetail.wxml-->
+<view class="container">
+  <view class="cinema-location">
+    <view class="cinema-name">{{result.cinemaName}}</view>
+    <view class="cinema-address" bindtap="getLocation">
+      <view class="cinema-address-left">{{result.address}}</view>
+      <view class="cinema-address-right">
+        <text style="margin-right: 10rpx;">一键导航</text>
+        <image src='/images/cinema-address.png'></image>
+      </view>
+    </view>
+    <view class="cinema-phone" bindtap='phone' data-phone='{{result.serviceMobile}}'>
+      <view class="cinema-phone-left">{{result.serviceMobile}}</view>
+      <view class="cinema-phone-right">
+        <text style="margin-right: 10rpx;">一键呼叫</text>
+        <image src='/images/cinema-phone.png'></image>
+      </view>
+    </view>
+    <view class="line"></view>
+  </view>
+  <view class="cinema-serve" wx:if="{{result.serviceDetailList.length>0}}">
+    <view class="serve-title">特色服务</view>
+    <block wx:for="{{result.serviceDetailList}}" wx:for-item="item" wx:key="item">
+      <view class="serve-item">
+        <text class="item-title">{{item.serviceName}}</text>
+        <view class="item-content">{{item.serviceDetail}}</view>
+      </view>
+    </block>
+    <view class="line"></view>
+  </view>
+  <view class="cinema-announcement">
+    <view class="announcement-title">影院公告</view>
+    <text class="announcement-content">{{result.notice}}</text>
+  </view>
+</view>

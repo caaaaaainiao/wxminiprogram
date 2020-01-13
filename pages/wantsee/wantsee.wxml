@@ -1,0 +1,23 @@
+<!--pages/wantsee/wantsee.wxml-->
+<!-- <text>pages/wantsee/wantsee.wxml</text> -->
+<!-- 想看的电影 -->
+<scroll-view scroll-y class='container' bindscrolltolower="searchScrollLower" wx:if="{{result.length > 0}}" bindscrolltolower="searchScrollLower">
+  <view class='banner'>共{{result.length}}部影片</view>
+  <block wx:for="{{result}}" wx:for-item="movie" wx:key="movie">
+    <view class='movie'>
+      <image src='{{movie.imageUrl}}' class='moviepic'></image>
+      <view class='name'>{{movie.filmName}}</view>
+      <view class='time'>
+        <block wx:for="{{movie.actorName}}" wx:for-item="name" wx:key="name">
+          <text>{{name}},</text>
+        </block>
+      </view>
+      <view class='comment'>{{movie.publishDate}}上映</view>
+      <!-- <view class='btn'></view> -->
+    </view>
+  </block>
+</scroll-view>
+<view class='empty' wx:else>
+  <image src='https://whtxcx.oss-cn-hangzhou.aliyuncs.com/min/empty1.png'></image>
+  <view class='emptytext'>亲，没有想看电影哦～</view>
+</view>

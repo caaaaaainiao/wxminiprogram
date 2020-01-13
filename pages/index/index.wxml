@@ -1,0 +1,163 @@
+<!-- 首页 -->
+<view class="container">
+  <view class='first' bindtap='removeBlack' wx:if="{{isFirst&&moviearea}}">
+    <image src='https://whtxcx.oss-cn-hangzhou.aliyuncs.com/min/firstTip.png' class='firstTip'></image>
+    <view class='firstbox'></view>
+  </view>
+  <image src="/images/index-nav.png" class="navbg" wx:if="{{!showNav}}" bindtap="closeNav"></image>
+  <image class='bannerbg' src='/images/indexbanner.png'></image>
+  <view class='location' bindtap='startChoose'>
+    <image src='/images/location.png'></image>
+    <text>{{moviearea}}</text>
+  </view>
+  <view class='content'>
+    <view class='userimage'>
+      <image src='{{userInfo.userHeadPic}}' mode='aspectFill' wx:if="{{userInfo}}"></image>
+      <image src='/images/loginBtn.png' catchtap="login" mode='aspectFill' wx:else></image>
+    </view>
+    <view class='bottom'>
+      <view class='messages'>
+        <view class="leftBlock" bindtap='toGold'>
+          <text class='title'>金币</text>
+          <text class='number' wx:if="{{goldNumber!=null&&goldNumber>=0}}">{{goldNumber}}</text>
+          <text class='number' wx:else>---</text>
+          <text class='discounts' wx:if='{{goldActivityMemo}}'>{{goldActivityMemo}}</text>
+        </view>
+        <view class="middleBlock">
+          <text>{{userInfo.userName}}</text>
+        </view>
+        <view class="rightBlock" bindtap='toCard'>
+          <text class='title'>余额</text>
+          <text class='number' wx:if="{{balance!=null&&balance>=0}}">{{balance}}</text>
+          <text class='number' wx:else>---</text>
+          <text class='discounts' wx:if='{{rechargeMemo}}'>{{rechargeMemo}}</text>
+        </view>
+      </view>
+      <view class='moviesBox'>
+        <scroll-view class='movies' scroll-y="true">
+          <block wx:for="{{movieList}}" wx:for-item="movie" wx:key="movie">
+            <view class='movie' bindtap='toDetails' data-id='{{movie.filmCode}}' data-index="{{index}}">
+              <image class='moviePic' src='{{movie.imageUrl}}'></image>
+              <block wx:if='{{movie.filmName}}'>
+                <text class='movieName'>{{movie.filmName}}</text>
+              </block>
+              <block wx:else>
+                <text class='movieName'>暂无</text>
+              </block>
+              <text class="movieScore" wx:if="{{movie.score && movie.score != 0}}">{{movie.score}}分</text>
+              <block wx:if='{{movie.introduction}}'>
+                <text class='movieText'>{{movie.introduction}}</text>
+              </block>
+              <block wx:else>
+                <text class='movieText'>暂无</text>
+              </block>
+              <block wx:if='{{movie.actor}}'>
+                <view class='moviePeopletxt'>
+                  <text class='moviePeople'>{{movie.actor}}</text>
+                </view>
+              </block>
+              <block wx:else>
+                <view class='moviePeopletxt'>
+                  <text class='moviePeople'>暂无</text>
+                </view>
+              </block>
+              <view class='label'>
+                <block wx:if='{{movie.dimensional}}'>
+                  <text>{{movie.dimensional}}</text>
+                </block>
+                <block wx:else>
+                  <text>暂无</text>
+                </block>
+              </view>
+              <image class='check' src='/images/buy_btn.png' catchtap='buy' data-id="{{movie.filmCode}}" data-index="{{index}}" wx:if="{{movie.status == 0}}"></image>
+              <image class='check' src='/images/buy2_btn.png' catchtap='buy' data-id="{{movie.filmCode}}" data-index="{{index}}" wx:elif="{{movie.status == 1}}"></image>
+            </view>
+          </block>
+        </scroll-view>
+        <view class='getLocation' wx:if="{{text == '授权访问当前地址'}}">
+          <button open-type="openSetting" bindopensetting="getLocation">{{text}}</button>
+        </view>
+      </view>
+    </view>
+  </view>
+  <!-- 选择城市 -->
+  <view class='choosearea' wx:if="{{isChoose}}">
+    <view class='city'>
+      <block wx:for="{{nowCity}}" wx:for-item="city" wx:key="city">
+        <text data-name="{{city.name}}" class='{{city.name == currentCity?"selectCity":""}}' bindtap='chooseCity'>{{city.show}}</text>
+      </block>
+    </view>
+    <block wx:for="{{cinemaList}}" wx:for-item="area" wx:key="area">
+      <view class='option' data-index='{{index}}' data-cinemaName='{{area.cinemaName}}' data-cinemaCode='{{area.cinemaCode}}' data-issnack='{{area.isSnackDistribution}}' data-miniSharePosters='{{area.miniSharePosters}}' bindtap='chooseCinema' data-address='{{area.address}}'
+        data-miniShareTitle='{{area.miniShareTitle}}' data-longitude='{{area.longitude}}' data-latitude='{{area.latitude}}'>
+
+        <view class='choosename {{area.cinemaName ==moviearea.cinemaName?"selectCinema":""}}'>{{area.cinemaName}}</view>
+        <view class='chooseArea'>{{area.address}}</view>
+        <view class='distance'>{{area.distance}}km</view>
+      </view>
+    </block>
+  </view>
+  <!-- 首次授权 -->
+  <view class="container2" wx:if="{{shouquan}}">
+    <view wx:if="{{canIUse}}">
+      <button open-type="getUserInfo" bindgetuserinfo="getUserInfo" class='getUserInfo'>
+        <image src='/images/accreditbtn.png'></image>
+      </button>
+    </view>
+    <block wx:else>
+      <view>微信版本过低，请升级后使用</view>
+    </block>
+  </view>
+</view>
+<!-- 注册成功海报 -->
+<view class='zc' wx:if="{{miniBannerVO}}" bindtap='hidehb'>
+  <image src='{{miniBannerVO}}'></image>
+</view>
+
+<!-- 评论 -->
+<view class='comment' wx:if="{{showComment}}">
+  <view class="comment-content">
+    <view class="content-head">
+      <image class="content-img" src="{{commentTipsVO.image}}"></image>
+      <view class="content-film">
+        <view>
+          <text class="content-filmName">{{commentTipsVO.filmName}}<text style="border:1px solid #EC2F4B; color:#EC2F4B; font-size: 18rpx;margin-left: 10rpx;">{{commentTipsVO.dimensional}}</text></text>
+          <text class="content-actor">{{commentTipsVO.actorName}}</text>
+        </view>
+        <view style="color: #888;font-size:20rpx;">
+          <text>{{commentTipsVO.playDate}}</text>
+          <text>{{commentTipsVO.playTime}}<text style="margin-left:20rpx;">{{commentTipsVO.screenName}}</text></text>
+        </view>
+      </view>
+    </view>
+    <view class="content-star">
+      <view class="score">
+        <view>评分</view>
+        <view style="color:#EC2F4B">{{score}}分</view>
+      </view>
+      <view class="starList">
+        <block wx:for="{{stars}}" wx:for-item="item" wx:key="index">
+          <image class="star-image" src="{{key > item ?(key-item == 0.5?halfSrc:selectedSrc) : normalSrc}}">
+            <view class="item" style="left:0rpx;top:0;" data-key="{{item+0.5}}" bindtap="selectLeft"></view>
+            <view class="item" style="left:26rpx;top:0;" data-key="{{item+1}}" bindtap="selectRight"></view>
+          </image>
+        </block>
+      </view>
+      <!-- <view class="evaluate">
+        <block wx:for="{{evaluate}}" wx:for-item="item" wx:key="index">
+          <view class="{{num==index?'color':''}}">{{item}}</view>
+        </block>
+      </view> -->
+    </view>
+    <textarea value="{{comment}}" bindinput="getComment" class="content-center" placeholder="看完电影，说点什么吧" placeholder-style="font-size: 20rpx; color: #888;text-align: center;" maxlength="100"></textarea>
+    <view class='pre'>
+      <block wx:for="{{text1}}" wx:for-item="text" wx:key="text">
+        <view class='text' bindtap='selectComment' data-index="{{index}}">{{text.text}}</view>
+      </block>
+    </view>
+    <view class="content-foot">
+      <image src="/images/lastTime.png" style="width: 282rpx;height:70rpx;" bindtap="hideComment"></image>
+      <image src="/images/submitComment.png" bindtap="submitComment" style="width: 240rpx;height:60rpx;"></image>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,573 @@
+<!--pages/orderForm/orderForm.wxml-->
+<!-- <text>pages/orderForm/orderForm.wxml</text> -->
+<!-- 确认买票订单内容 去支付 -->
+<wxs module="filters" src="../../utils/fixed.wxs"></wxs>
+<view class='container'>
+  <view class='header' wx:if='{{ticketOrder}}' style="position: relative">
+    <image class='bg' src='/images/indexbanner.png'></image>
+    <view class='moviename'>
+      <text>{{name}}</text>{{movieCount}}张</view>
+    <view class='time header_p'>{{date}} {{beginTime}}~{{endTime}}</view>
+    <view class='address header_p'>{{cinemaName}} </view>
+    <view class='seats header_p'>
+      {{hallName}}
+      <text>{{seatArr}}</text>
+    </view>
+    <view class='last'>
+      <image src='/images/timeicon.png'></image>
+      <text>{{unlockTime}}</text>
+    </view>
+  </view>
+  <view wx:if='{{goodsOrder}}' style="position: relative">
+    <block wx:for="{{goodsOrder.merchandiseVos}}" wx:for-item="mer" wx:key="mer">
+      <view class="goodsInfo">
+        <text class="goodsName">{{mer.merchandiseName}}</text>
+        <text class="goodsPrice">￥{{mer.standardPrice}}</text>
+        <text class="goodsNum">x{{mer.merchandiseCount}}</text>
+      </view>
+    </block>
+  </view>
+  <view style="width:100%;height:15rpx;background:rgba(238,238,238,1);"></view>
+  <!-- 影票优惠 -->
+  <view wx:if='{{ticketOrder}}' style="position: relative">
+    <view class="option">
+      <text style="float:left;color:rgb(135,135,135)">影票优惠</text>
+    </view>
+    <!-- 权益卡 -->
+    <view class='option'>
+      <view wx:if='{{ticketOrder.totalActivityDiscount>0&&ticketOrder.activityType==3}}' bindtap='setType4'>
+        <image src='/images/gray_more.png'></image>
+        <text style="float:left;color:black">权益卡</text>
+        <text class='discountMoney'>-￥{{ticketOrder.totalActivityDiscount}}</text>
+        <text class='overflow'>{{ticketOrder.activityName}}</text>
+      </view>
+      <view wx:elif='{{ticketOrder.haveBenefit == 0}}' bindtap="openEquityCard">
+        <text style="float:left;color:black">权益卡</text>
+        <text class='discountMoney'>去开通</text>
+      </view>
+      <view wx:elif='{{ticketOrder.haveBenefit == 1}}' bindtap='setType4'>
+        <image style="float:right" src='/images/gray_more.png'></image>
+        <text style="float:left;color:black">权益卡</text>
+        <text class='discountMoney'>选择</text>
+        <text style='color:gray;margin-right:150rpx;'>不可与影城活动同时使用</text>
+      </view>
+      <view wx:elif='{{ticketOrder.haveBenefit == 2}}' bindtap='setType4'>
+        <image style="float:right" src='/images/gray_more.png'></image>
+        <text style="float:left;color:black">权益卡</text>
+        <text class='discountMoney' style="color:rgba(135,135,135,1)">无可用</text>
+      </view>
+    </view>
+    <!-- 优惠活动 -->
+    <view class='option'>
+      <view wx:if='{{ticketOrder.totalActivityDiscount>0&&ticketOrder.activityType!=3}}' bindtap='setType3'>
+        <text style="float:left;color:black">优惠活动</text>
+        <image src='/images/gray_more.png'></image>
+        <text class='discountMoney'>-￥{{ticketOrder.totalActivityDiscount}}</text>
+        <text class='overflow'>{{ticketOrder.activityName}}</text>
+      </view>
+      <view wx:elif='{{ticketOrder.haveActivity == 0}}'>
+        <text style="float:left;color:black">优惠活动</text>
+        <text class='discountMoney' style="color:rgba(135,135,135,1)">无活动</text>
+      </view>
+      <view wx:elif='{{ticketOrder.haveActivity == 1}}' bindtap='setType3'>
+        <image style="float:right" src='/images/gray_more.png'></image>
+        <text style="float:left;color:black">优惠活动</text>
+        <text class='discountMoney'>选择</text>
+        <text style='color:gray;margin-right:150rpx;'>不可与权益卡同时使用</text>
+      </view>
+      <view wx:elif='{{ticketOrder.haveActivity == 2}}' bindtap='setType3'>
+        <image style="float:right" src='/images/gray_more.png'></image>
+        <text style="float:left;color:black">优惠活动</text>
+        <text class='discountMoney' style="color:rgba(135,135,135,1)">无可用</text>
+      </view>
+    </view>
+    <!-- 影票优惠券 -->
+    <view class='option'>
+      <view wx:if='{{ticketOrder.couponId&&ticketOrder.couponId>0}}' bindtap='setType1'>
+        电影票优惠券
+        <image src='/images/gray_more.png'></image>
+        <text class='discountMoney'>-￥{{ticketOrder.totalCouponDiscount}}</text>
+        <text class='overflow'>{{ticketOrder.couponName}}</text>
+      </view>
+      <view wx:elif='{{ticketOrder.haveCoupon == 0}}'>
+        电影票优惠券
+        <text class='discountMoney' style="color:rgba(135,135,135,1)">无可用</text>
+      </view>
+      <view wx:elif='{{ticketOrder.haveCoupon == 1}}' bindtap='setType1'>
+        电影票优惠券
+        <image src='/images/gray_more.png'></image>
+        <text class='discountMoney'>选择</text>
+      </view>
+      <view wx:elif='{{ticketOrder.haveCoupon == 2}}' bindtap='setType1'>
+        电影票优惠券
+        <image src='/images/gray_more.png'></image>
+        <text class='discountMoney' style="color:rgba(135,135,135,1)">无可用</text>
+      </view>
+    </view>
+    <view class='gray_line'></view>
+    <view class='gray_line'></view>
+  </view>
+
+  <!-- 卖品优惠 -->
+  <view wx:if='{{merOrder}}' style="position: relative">
+    <view class="option">
+      <text style="float:left;color:rgb(135,135,135)">卖品优惠</text>
+    </view>
+    <!-- 权益卡 -->
+    <view class='option'>
+      <view wx:if='{{merOrder.totalActivityDiscount>0&&merOrder.activityType==3}}' bindtap='setType9'>
+        <image src='/images/gray_more.png'></image>
+        <text style="float:left;color:black">权益卡</text>
+        <text class='discountMoney'>-￥{{merOrder.totalActivityDiscount}}</text>
+        <text class='overflow'>{{merOrder.activityName}}</text>
+      </view>
+      <view wx:elif='{{merOrder.haveBenefit == 0}}' bindtap="openEquityCard">
+        <text style="float:left;color:black">权益卡</text>
+        <text class='discountMoney'>去开通</text>
+      </view>
+      <view wx:elif='{{merOrder.haveBenefit == 1}}' bindtap='setType9'>
+        <image style="float:right" src='/images/gray_more.png'></image>
+        <text style="float:left;color:black">权益卡</text>
+        <text class='discountMoney'>选择</text>
+        <text style='color:gray;margin-right:150rpx;'>不可与影城活动同时使用</text>
+      </view>
+      <view wx:elif='{{merOrder.haveBenefit == 2}}' bindtap='setType9'>
+        <image style="float:right" src='/images/gray_more.png'></image>
+        <text style="float:left;color:black">权益卡</text>
+        <text class='discountMoney' style="color:rgba(135,135,135,1)">无可用</text>
+      </view>
+    </view>
+    <!-- 优惠活动 -->
+    <view class='option'>
+      <view wx:if='{{merOrder.totalActivityDiscount>0&&merOrder.activityType!=3}}' bindtap='setType8'>
+        <text style="float:left;color:black">优惠活动</text>
+        <image src='/images/gray_more.png'></image>
+        <text class='discountMoney'>-￥{{merOrder.totalActivityDiscount}}</text>
+        <text class='overflow'>{{merOrder.activityName}}</text>
+      </view>
+      <view wx:elif='{{merOrder.haveActivity == 0}}'>
+        <text style="float:left;color:black">优惠活动</text>
+        <text class='discountMoney' style="color:rgba(135,135,135,1)">无活动</text>
+      </view>
+      <view wx:elif='{{merOrder.haveActivity == 1}}' bindtap='setType8'>
+        <image style="float:right" src='/images/gray_more.png'></image>
+        <text style="float:left;color:black">优惠活动</text>
+        <text class='discountMoney'>选择</text>
+        <text style='color:gray;margin-right:150rpx;'>不可与权益卡同时使用</text>
+      </view>
+      <view wx:elif='{{merOrder.haveActivity == 2}}' bindtap='setType8'>
+        <image style="float:right" src='/images/gray_more.png'></image>
+        <text style="float:left;color:black">优惠活动</text>
+        <text class='discountMoney' style="color:rgba(135,135,135,1)">无可用</text>
+      </view>
+    </view>
+    <!-- 卖品优惠券 -->
+    <view class='option'>
+      <view wx:if='{{merOrder.couponId&&merOrder.couponId>0}}' bindtap='setType7'>
+        卖品优惠券
+        <image src='/images/gray_more.png'></image>
+        <text class='discountMoney'>-￥{{merOrder.totalCouponDiscount}}</text>
+        <text class='overflow'>{{merOrder.couponName}}</text>
+      </view>
+      <view wx:elif='{{merOrder.haveCoupon == 0}}'>
+        卖品优惠券
+        <text class='discountMoney' style="color:rgba(135,135,135,1)">无可用</text>
+      </view>
+      <view wx:elif='{{merOrder.haveCoupon == 1}}' bindtap='setType7'>
+        卖品优惠券
+        <image src='/images/gray_more.png'></image>
+        <text class='discountMoney'>选择</text>
+      </view>
+      <view wx:elif='{{merOrder.haveCoupon == 2}}' bindtap='setType7'>
+        卖品优惠券
+        <image src='/images/gray_more.png'></image>
+        <text class='discountMoney' style="color:rgba(135,135,135,1)">无可用</text>
+      </view>
+    </view>
+    <view class='gray_line'></view>
+    <view class='gray_line'></view>
+  </view>
+  <!-- 支付方式 -->
+  <view style="position: relative;margin-bottom:200rpx;">
+    <view class="option">
+      <text style="float:left">支付方式</text>
+    </view>
+    <view class='payoption'>
+      <view class='membercardpay' bindtap='cardway'>
+        <image src='/images/membercardpay.png' class='payimg'></image>
+        会员卡支付
+        <text class='money' style="margin-right:50rpx" wx:if="{{!card}}">未绑定</text>
+        <!-- <text class='money' wx:elif="{{card&&memberCardPrice>-1}}">{{memberCardPrice}}</text>
+        <text class='money' wx:else="{{card&&memberCardPrice == -1}}" style="margin-right:50rpx">获取会员价失败</text> -->
+        <image src='/images/payselect.png' class='selectimg' wx:if="{{payway==2}}"></image>
+        <image src='/images/unselect.png' class='selectimg' wx:else></image>
+      </view>
+      <view class='wxpay' bindtap='wxway'>
+        <image src='/images/wxpay.png' class='payimg'></image>
+        微信支付
+        <image src='/images/payselect.png' class='selectimg' wx:if="{{payway==1}}"></image>
+        <image src='/images/unselect.png' class='selectimg' wx:else></image>
+      </view>
+    </view>
+  </view>
+  <view class='gray_line'></view>
+  <view class='gray_line'></view>
+  <view class='bottom'>
+    <view class='price'>
+      <view class='left' wx:if="{{payway == 1 && wxFee > 0}}">含代售费
+        <text>{{wxFee}}元</text>
+      </view>
+      <view class='left' wx:if="{{payway == 2 && memberPayFee > 0}}">含代售费
+        <text>{{memberPayFee}}元</text>
+      </view>
+      <view class="originalPrice">
+        原价：{{originalPrice}}
+      </view>
+      <view class='right'>
+        应付
+        <text class='numpay' wx:if='{{ticketOrder&&merOrder}}'>{{orderPrice}}</text>
+        <text class='numpay' wx:elif='{{ticketOrder}}'>{{ticketOrder.totalActualPrice}}</text>
+        <text class='numpay' wx:elif='{{merOrder}}'>{{merOrder.totalActualPrice}}</text>
+        <text class='numpay' wx:else>0</text>
+        <text>元</text>
+      </view>
+    </view>
+    <view class='buy' wx:if="{{seatOrder.waitActivity != null}}">{{seatOrder.waitActivity.name}}，再买
+      <text wx:if="{{seatOrder.waitActivity.lackMoney == 0}}">任意套餐</text>
+      <text wx:else>{{seatOrder.waitActivity.lackMoney}}元</text> ，可减
+      <text>{{seatOrder.waitActivity.reduceMoney}}元</text>
+    </view>
+  </view>
+  <view class='btn' bindtap='zero' wx:if="{{seatOrder.disPrice == 0}}">确认0元购票</view>
+  <view class='btn' bindtap='choosePay' wx:else>立即支付</view>
+
+  <!-- 选择支付方式 -->
+  <view class='black' wx:if="{{showBlack}}">
+    <view class='checkarea'>
+      <view class='close' bindtap='close'>
+        <image src='/images/close.png'></image>
+      </view>
+      <view class='checktitle'>支付方式</view>
+      <view class='way' bindtap='wxPay'>
+        <image src='/images/wx.png'></image>
+        <text>微信支付</text>
+      </view>
+      <view class='way' bindtap='showM'>
+        <image src='/images/ka.png'></image>
+        <text>会员卡支付</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 会员卡密码 -->
+  <view class='black2' wx:if="{{showM}}">
+    <view class='add2'>
+      <image class='close2' src='/images/close.png' bindtap='closeM'></image>
+      <view class='input2'>
+        <input type='password' placeholder-style="color:#888;" placeholder='请输入密码' bindinput='setM'></input>
+      </view>
+      <form report-submit='true' bindsubmit='formSubmit'>
+        <button formType="submit" class='submit2' bindtap='pay2'>确 定</button>
+      </form>
+    </view>
+  </view>
+
+  <!-- 备注 -->
+  <view class='black2' wx:if="{{messageshow}}">
+    <view class='add2'>
+      <image class='close2' src='/images/close.png' bindtap='closeMessageshow'></image>
+      <view class='input2' style='height:160rpx;padding-right:30rpx;'>
+        <textarea placeholder-style="color:#888;line-height:80rpx;" placeholder='请输入备注' maxlength='50' bindinput='setMessage'></textarea>
+      </view>
+      <view class='submit2' bindtap='closeMessageshow'>确 定</view>
+    </view>
+  </view>
+
+  <!-- 选择影票优惠活动 -->
+  <view class="mask" wx:if="{{chooseType==3}}">
+    <view class='chooseCoupon'>
+      <!-- 不使用活动 -->
+      <view class='canUse' bindtap='setActive' data-id='0' data-code='0'>
+        <view class='couponLimit center'>不使用活动</view>
+        <image src='/images/gou.png' class='couponStatus1' wx:if="{{!ticketOrder.activityId||(ticketOrder.activityType&&ticketOrder.activityType==3)}}"></image>
+        <view class='couponStatus2' wx:else></view>
+      </view>
+      <block wx:if='{{ticketOrder.activities&&ticketOrder.activities.length>0}}' wx:for="{{ticketOrder.activities}}" wx:for-item="active" wx:key="active">
+        <!-- 可选 -->
+        <view wx:if='{{active.canUseFilm==1}}' class='canUse' bindtap='setActive' data-id='{{active.id}}' data-code='{{active.singleSurplus}}' data-couponPrice='{{seatCoupons.reductionPrice}}' data-index="{{index}}">
+          <view class='couponMoney'>￥{{active.discountMoney}}</view>
+          <view class='couponLimit'>{{active.name}}</view>
+          <view class='couponTime'>场次有效期：{{active.endDate}}</view>
+          <image src='/images/gou.png' class='couponStatus1' wx:if="{{ticketOrder.activityType!=3&&ticketOrder.activityId==active.id}}"></image>
+          <view class='couponStatus2' wx:else></view>
+        </view>
+        <!-- 不可选 -->
+        <view wx:elif='{{active.canUseFilm==0}}' class='canUse' data-index="{{index}}">
+          <!-- <view>不可选</view> -->
+          <view class='couponMoney' style="color:#888">￥{{active.discountMoney}}</view>
+          <view class='couponLimit' style="color:#888">{{active.name}}</view>
+          <view class='couponTime' style="color:#888">场次有效期：{{active.endDate}}</view>
+        </view>
+      </block>
+      <view class='checkok' bindtap='closeChoose'>选好了</view>
+    </view>
+  </view>
+
+  <!-- 选择影票权益卡 -->
+  <view class="mask" wx:if="{{chooseType==4}}">
+    <view class='chooseCoupon'>
+      <!-- 不使用权益卡 -->
+      <view class='canUse' bindtap='setBenefit' data-id='0' data-code='0'>
+        <view class='couponLimit center'>不使用权益卡</view>
+        <image src='/images/gou.png' class='couponStatus1' wx:if="{{!ticketOrder.activityId||(ticketOrder.activityType&&ticketOrder.activityType!=3)}}"></image>
+        <view class='couponStatus2' wx:else></view>
+      </view>
+      <block wx:if='{{ticketOrder.benefitCards&&ticketOrder.benefitCards.length>0}}' wx:for="{{ticketOrder.benefitCards}}" wx:for-item="benefit" wx:key="benefit">
+        <!-- 可选 -->
+        <view wx:if="{{benefit.benefitCard.canUseFilm==1}}">
+          <view class='canUse' bindtap='setBenefit' data-id='{{benefit.id}}' data-code='{{benefit.benefitCard.userFlimNumber}}' data-couponPrice='{{seatCoupons.reductionPrice}}' data-index="{{index}}">
+            <view class='couponMoney' wx:if="{{benefit.benefitCard.reduceTypeFilm==3}}">{{benefit.benefitCard.discountMoneyFilm}}折</view>
+            <view class='couponMoney' wx:else>￥{{benefit.benefitCard.discountMoneyFilm}}</view>
+            <view class='couponLimit'>{{benefit.benefitCard.name}}</view>
+            <view class='couponTime'>有效期：{{benefit.endDate}}</view>
+            <image src='/images/gou.png' class='couponStatus1' wx:if="{{ticketOrder.activityType==3&&ticketOrder.activityId==benefit.id}}"></image>
+            <view class='couponStatus2' wx:else></view>
+          </view>
+        </view>
+
+        <!-- 不可选 -->
+        <view wx:elif='{{benefit.benefitCard.canUseFilm==0}}' class='canUse' data-index="{{index}}">
+          <!-- <view>不可选</view> -->
+          <view class='couponMoney' style="color:#888" wx:if="{{benefit.benefitCard.reduceTypeFilm==3}}">{{benefit.benefitCard.discountMoneyFilm}}折</view>
+            <view class='couponMoney' style="color:#888" wx:else>￥{{benefit.benefitCard.discountMoneyFilm}}</view>
+          <view class='couponLimit' style="color:#888">{{benefit.benefitName}}</view>
+          <view class='couponTime' style="color:#888">有效期：{{benefit.endDate}}</view>
+        </view>
+      </block>
+      <view class='checkok' bindtap='closeChoose'>选好了</view>
+    </view>
+  </view>
+
+  <!-- 选择电影票优惠券 -->
+  <view class="mask" wx:if="{{chooseType==1}}">
+    <view class='chooseCoupon' style="background: #F2F2F2">
+    <view class="tabNav">
+        <view wx:for="{{navTab}}" wx:key="index" data-idx="{{index}}" bindtap="currentTicketTab" class="{{currentTicketTab==index ? 'cur' : ''}}"><text>{{item}}</text></view>
+    </view>
+      <view class='canUse canuseCoupon' bindtap='setSeatCoupon' data-id='0' data-code='0'>
+        <view class='couponLimit center'>不使用券</view>
+        <image src='/images/gou.png' class='couponStatus1' wx:if="{{!ticketOrder.couponId}}"></image>
+        <view class='couponStatus2' wx:else></view>
+      </view>
+      <block wx:for="{{ticketOrder.coupons}}" wx:for-item="seatCoupons" wx:key="seatCoupons">
+        <!--可用-->
+        <view wx:if="{{seatCoupons.coupon.canUse==1 && canuseTicketCoupon}}" class="canuseCoupon">
+          <view class='canUse' bindtap='setSeatCoupon' data-id='{{seatCoupons.id}}' data-index="{{index}}">
+            <view class='couponMoney' wx:if="{{seatCoupons.coupon.couponType == 1 && seatCoupons.coupon.reduceType == 1 && seatCoupons.coupon.discountMoney == 0}}">
+              <image src="/images/couponicon2.png" style="width: 50rpx;height: 50rpx;margin-bottom: 30rpx"></image>
+            </view>
+            <view class='couponMoney' wx:else>￥{{seatCoupons.coupon.discountMoney}}</view>
+            <view class='couponLimit'>{{seatCoupons.coupon.name}}</view>
+            <view class='couponTime'>有效期：{{seatCoupons.startTime}}至{{seatCoupons.endTime}}</view>
+            <image src='/images/gou.png' class='couponStatus1' wx:if="{{ticketOrder.couponId&&ticketOrder.couponId==seatCoupons.id}}"></image>
+            <view class='couponStatus2' wx:else></view>
+          </view>
+          <view class="describe" style="font-size: 24rpx;color:#888;position:relative;width:100%;">
+            <view class='control' bindtap='seeTicketAll' data-index="{{index}}" wx:if='{{!seatCoupons.coupon.select}}'>使用规则
+              <image src='/images/in.png' class="showRule"></image>
+            </view>
+            <view class='control' bindtap='seeTicketAll' data-index="{{index}}" wx:else>使用规则
+              <image src='/images/into.png' class="showRule"></image>
+            </view>
+          </view>
+          <view style="font-size: 20rpx; color: #888;padding-bottom: 10rpx;padding-left: 40rpx;padding-right: 40rpx;">
+              <view wx:if='{{seatCoupons.coupon.select}}'>
+                {{seatCoupons.coupon.couponDesc}}
+              </view>
+          </view>
+        </view>
+        <!-- 不可用 -->
+        <view wx:if="{{seatCoupons.coupon.canUse==0 && unCanuseTicketCoupon}}" class="unCanuseCoupon">
+          <view class='canUse' style="border-bottom: 1rpx dashed #ddd;" data-index="{{index}}">
+            <view class='couponMoney' wx:if="{{seatCoupons.coupon.couponType == 1 && seatCoupons.coupon.reduceType == 1 && seatCoupons.coupon.discountMoney == 0}}">
+                <image src="/images/couponicon2.png" style="width: 50rpx;height: 50rpx;margin-bottom: 30rpx"></image>
+            </view>
+            <view class='couponMoney' style="color:#888" wx:else>￥{{seatCoupons.coupon.discountMoney}}</view>
+            <view class='couponLimit' style="color:#888">{{seatCoupons.coupon.name}}</view>
+            <view class='couponTime' style="color:#888">有效期：{{seatCoupons.startTime}}至{{seatCoupons.endTime}}</view>
+          </view>
+          <view class="describe unCanuseReson2" wx:if='{{seatCoupons.coupon.canNotReason != ""}}'>
+            <view>原因：{{seatCoupons.coupon.canNotReason}}</view>
+            <view class='control' bindtap='seeTicketAll' data-index="{{index}}" wx:if='{{!seatCoupons.coupon.select}}'>使用规则
+              <image src='/images/in.png' class="showRule"></image>
+            </view>
+            <view class='control' bindtap='seeTicketAll' data-index="{{index}}" wx:else>使用规则
+              <image src='/images/into.png' class="showRule"></image>
+            </view>
+          </view>
+          <view style="font-size: 20rpx; color: #888;padding-bottom: 10rpx;padding-left: 40rpx;padding-right: 40rpx;">
+              <view wx:if='{{seatCoupons.coupon.select}}'>
+                {{seatCoupons.coupon.couponDesc}}
+              </view>
+          </view>
+        </view>
+      </block>
+      <view class='checkok' bindtap='closeChoose'>选好了</view>
+    </view>
+  </view>
+
+
+  <!-- 选择卖品优惠活动 -->
+  <view class="mask" wx:if="{{chooseType==8}}">
+    <view class='chooseCoupon'>
+      <!-- 不使用活动 -->
+      <view class='canUse' bindtap='setMerActive' data-id='0' data-code='0'>
+        <view class='couponLimit center'>不使用活动</view>
+        <image src='/images/gou.png' class='couponStatus1' wx:if="{{!merOrder.activityId||(merOrder.activityType&&merOrder.activityType==3)}}"></image>
+        <view class='couponStatus2' wx:else></view>
+      </view>
+      <block wx:if='{{merOrder.activities&&merOrder.activities.length>0}}' wx:for="{{merOrder.activities}}" wx:for-item="active" wx:key="active">
+        <!-- 可选 -->
+        <view wx:if='{{active.canUserMer==1}}' class='canUse' bindtap='setMerActive' data-id='{{active.id}}' data-couponPrice='{{seatCoupons.reductionPrice}}' data-index="{{index}}">
+          <view class='couponMoney'>￥{{active.discountMoney}}</view>
+          <view class='couponLimit'>{{active.name}}</view>
+          <view class='couponTime'>有效期：{{active.endDate}}</view>
+          <image src='/images/gou.png' class='couponStatus1' wx:if="{{merOrder.activityType!=3&&merOrder.activityId==active.id}}"></image>
+          <view class='couponStatus2' wx:else></view>
+        </view>
+        <!-- 不可选 -->
+        <view wx:if='{{active.canUserMer==0}}' class='canUse' data-index="{{index}}">
+          <!-- <view>不可选</view> -->
+          <view class='couponMoney' style="color:#888">￥{{active.discountMoney}}</view>
+          <view class='couponLimit' style="color:#888">{{active.name}}</view>
+          <view class='couponTime' style="color:#888">有效期：{{active.endDate}}</view>
+        </view>
+      </block>
+      <view class='checkok' bindtap='closeChoose'>选好了</view>
+    </view>
+  </view>
+
+
+  <!-- 选择卖品权益卡 -->
+  <view class="mask" wx:if="{{chooseType==9}}">
+    <view class='chooseCoupon'>
+      <!-- 不使用权益卡 -->
+      <view class='canUse' bindtap='setMerBenefit' data-id='0' data-code='0'>
+        <view class='couponLimit center'>不使用权益卡</view>
+        <image src='/images/gou.png' class='couponStatus1' wx:if="{{!merOrder.activityId||(merOrder.activityType&&merOrder.activityType!=3)}}"></image>
+        <view class='couponStatus2' wx:else></view>
+      </view>
+      <block wx:if='{{merOrder.benefitCards&&merOrder.benefitCards.length>0}}' wx:for="{{merOrder.benefitCards}}" wx:for-item="benefit" wx:key="benefit">
+        <!-- 可选 -->
+        <view wx:if='{{benefit.benefitCard.canUserMer==1}}' class='canUse' data-index="{{index}}">
+          <view class='canUse' bindtap='setMerBenefit' data-id='{{benefit.id}}' data-couponPrice='{{seatCoupons.reductionPrice}}' data-index="{{index}}">
+            <view class='couponMoney' wx:if='{{benefit.benefitCard.reduceTypeMerchandise==3}}'>{{benefit.benefitCard.discountMoneyMerchandise}}折</view>
+            <view class='couponMoney' wx:else>￥{{benefit.benefitCard.discountMoneyMerchandise}}</view>
+            <view class='couponLimit'>{{benefit.benefitName}}</view>
+            <view class='couponTime'>有效期：{{benefit.endDate}}</view>
+            <image src='/images/gou.png' class='couponStatus1' wx:if="{{merOrder.activityType==3&&merOrder.activityId==benefit.id}}"></image>
+            <view class='couponStatus2' wx:else></view>
+          </view>
+        </view>
+
+        <!-- 不可选 -->
+        <view wx:elif='{{benefit.benefitCard.canUserMer==0}}' class='canUse' data-index="{{index}}">
+          <!-- <view>不可选</view> -->
+          <view class='couponMoney' style="color:#888" wx:if='{{benefit.benefitCard.reduceTypeMerchandise==3}}'>{{benefit.benefitCard.discountMoneyMerchandise}}折</view>
+            <view class='couponMoney' style="color:#888" wx:else>￥{{benefit.benefitCard.discountMoneyMerchandise}}</view>
+          <view class='couponLimit' style="color:#888">{{benefit.benefitName}}</view>
+          <view class='couponTime' style="color:#888">有效期：{{benefit.endDate}}</view>
+        </view>
+      </block>
+      <view class='checkok' bindtap='closeChoose'>选好了</view>
+    </view>
+  </view>
+
+  <!-- 选择卖品优惠券 -->
+  <view class="mask" wx:if="{{chooseType==7}}">
+    <view class='chooseCoupon' style="background: #F2F2F2">
+      <view class="tabNav">
+        <view wx:for="{{navTab}}" wx:key="index" data-idx="{{index}}" bindtap="currentMerTab" class="{{currentMerTab==index ? 'cur' : ''}}"><text>{{item}}</text></view>
+      </view>
+      <!-- 不使用活动 -->
+      <view class='canUse canuseCoupon' bindtap='setMerCoupon' data-id='0' data-code='0'>
+        <view class='couponLimit center'>不使用券</view>
+        <image src='/images/gou.png' class='couponStatus1' wx:if="{{!merOrder.couponId}}"></image>
+        <view class='couponStatus2' wx:else></view>
+      </view>
+      <block wx:for="{{merOrder.coupons}}" wx:for-item="seatCoupons" wx:key="seatCoupons">
+        <!--可用-->
+        <view wx:if="{{seatCoupons.coupon.canUse==1 && canuseMerCoupon}}" class="canuseCoupon">
+          <view class='canUse' bindtap='setMerCoupon' data-id='{{seatCoupons.id}}' data-index="{{index}}">
+            <view class='couponMoney' wx:if="{{seatCoupons.coupon.couponType == 2 && seatCoupons.coupon.reduceType == 1 && seatCoupons.coupon.discountMoney == 0}}">
+              <image src="/images/exfood.png" style="width: 50rpx;height: 50rpx;margin-bottom: 30rpx"></image>
+            </view>
+            <view class='couponMoney' wx:else>￥{{seatCoupons.coupon.discountMoney}}</view>
+            <view class='couponLimit'>{{seatCoupons.coupon.name}}</view>
+            <view class='couponTime'>有效期：{{seatCoupons.startTime}}至{{seatCoupons.endTime}}</view>
+            <image src='/images/gou.png' class='couponStatus1' wx:if="{{merOrder.couponId&&merOrder.couponId==seatCoupons.id}}"></image>
+            <view class='couponStatus2' wx:else></view>
+          </view>
+          <view class="describe" style="font-size: 24rpx;color:#888;position:relative;width:100%;">
+            <view class='control' bindtap='seeMerAll' data-index="{{index}}" wx:if='{{!seatCoupons.coupon.select}}'>使用规则
+              <image src='/images/in.png' class="showRule"></image>
+            </view>
+            <view class='control' bindtap='seeMerAll' data-index="{{index}}" wx:else>使用规则
+              <image src='/images/into.png' class="showRule"></image>
+            </view>
+          </view>
+          <view style="font-size: 20rpx; color: #888;padding-bottom: 10rpx;padding-left: 40rpx;padding-right: 40rpx;">
+              <view wx:if='{{seatCoupons.coupon.select}}'>
+                {{seatCoupons.coupon.couponDesc}}
+              </view>
+          </view>
+        </view>
+        <!-- 不可用 -->
+        <view wx:if="{{seatCoupons.coupon.canUse==0 && unCanuseMerCoupon}}" class="unCanuseCoupon">
+          <view class='canUse' style="border-bottom: 1rpx dashed #ddd;" data-index="{{index}}">
+            <view class='couponMoney' wx:if="{{seatCoupons.coupon.couponType == 2 && seatCoupons.coupon.reduceType == 1 && seatCoupons.coupon.discountMoney == 0}}">
+              <image src="/images/exfood.png" style="width: 50rpx;height: 50rpx;margin-bottom: 30rpx"></image>
+            </view>
+            <view class='couponMoney' style="color:#888" wx:else>￥{{seatCoupons.coupon.discountMoney}}</view>
+            <view class='couponLimit' style="color:#888">{{seatCoupons.coupon.name}}</view>
+            <view class='couponTime' style="color:#888">有效期：{{seatCoupons.startTime}}至{{seatCoupons.endTime}}</view>
+          </view>
+          <view class="describe unCanuseReson2" wx:if='{{seatCoupons.coupon.canNotReason != ""}}'>
+            <view>原因：{{seatCoupons.coupon.canNotReason}}</view>
+            <view class='control' bindtap='seeMerAll' data-index="{{index}}" wx:if='{{!seatCoupons.coupon.select}}'>使用规则
+              <image src='/images/in.png' class="showRule"></image>
+            </view>
+            <view class='control' bindtap='seeMerAll' data-index="{{index}}" wx:else>使用规则
+              <image src='/images/into.png' class="showRule"></image>
+            </view>
+          </view>
+          <view style="font-size: 20rpx; color: #888;padding-bottom: 10rpx;padding-left: 40rpx;padding-right: 40rpx;">
+              <view wx:if='{{seatCoupons.coupon.select}}'>
+                {{seatCoupons.coupon.couponDesc}}
+              </view>
+          </view>
+        </view>
+      </block>
+      <view class='checkok' bindtap='closeChoose'>选好了</view>
+    </view>
+  </view>
+
+  <!-- 选择会员卡号 -->
+  <view class='black2' wx:if="{{isShow}}">
+    <view class='add2'>
+      <image class='close2' src='/images/close.png' bindtap='closeM'></image>
+      <view class="box-bottom">
+        <view class="title" style="text-align: center;">选择会员卡号</view>
+        <view class="choose">
+          <block wx:for="{{card}}" wx:for-item="card" wx:key="card">
+            <button bindtap="btnChoose" data-id="{{index}}" data-cardNo="{{card.cardNo}}" data-levelCode="{{card.levelCode}}" hover-class="none">
+              {{card.cardNo}}
+            </button>
+          </block>
+        </view>
+        <view class="operate">
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

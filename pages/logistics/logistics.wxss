@@ -1,0 +1,162 @@
+/* pages/logistics.wxss */
+.container{
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: auto;
+}
+
+.head {
+  height: 254rpx;
+  position: relative;
+  width: 100%;
+}
+
+.courier {
+  width: 44rpx;
+  height: 44rpx;
+  position: absolute;
+  left: 21rpx;
+  bottom: 100rpx;
+}
+
+.basic-info {
+  width: 600rpx;
+  position: absolute;
+  left: 91rpx;
+  top: 40rpx;
+  color: #888;
+  font-size:24rpx;
+}
+
+.companyName {
+  color:#009FFF;
+  font-size:30rpx;
+  margin-bottom: 10rpx;
+}
+
+.address {
+  overflow: hidden;
+	text-overflow: ellipsis;
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+}
+
+.line {
+  width:750rpx;
+  height:15rpx;
+  background:rgba(238,238,238,1);
+}
+
+.logisit{
+  margin-left: 40rpx;
+  margin-top: 50rpx;
+  display: flex;
+}
+
+.express-middle-axis {
+  width: 48rpx;
+  position: relative;
+  top: -214rpx;
+}
+
+.express-status-address{
+  font-size: 28rpx;
+  color: #666;
+}
+
+.express-statusing{
+  font-size: 24rpx;
+  color: #999;
+}
+
+.express-left-date {
+  display: flex;
+  width: 300rpx;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+}
+ 
+.online-top-closing {
+  width: 1rpx;
+  height: 220rpx;
+  background: #888;
+  position:absolute;
+  top:60rpx;
+  left:26rpx;
+}
+
+.color {
+  color: #009FFF;
+  margin-bottom: 15rpx;
+}
+
+.color_second{
+  color: #999;
+  margin-bottom: 15rpx;
+}
+ 
+.dot-closing {
+  width: 30rpx;
+  height: 30rpx;
+  border-radius: 50%;
+  margin-top: 50rpx;
+  /* margin-bottom:-45rpx; */
+  border:1rpx  solid #d7d7d7;
+  text-align:center;
+  line-height:30rpx;
+  font-size:30rpx;
+  color:#d7d7d7;
+  animation:myfirst;
+  animation-fill-mode:forwards;
+  position:absolute;
+  top:175rpx;
+  left:4rpx;
+ 
+}
+
+.dot-closing_two {
+  width: 16rpx;
+  height: 16rpx;
+  border-radius: 50%;
+  border:1rpx  solid #888;
+  background: #888;
+  animation:myfirst;
+  animation-fill-mode:forwards;
+  position:absolute;
+  top:230rpx;
+  left:19rpx;
+}
+
+@keyframes myfirst
+{
+	to {
+      font-weight: bold;
+      transform: rotate(270deg);
+    }
+}
+
+.dot-shou {
+  width: 26rpx;
+  height: 26rpx;
+  border-radius: 50%;
+  margin-top: 6rpx;
+}
+
+.dot_two{
+  width: 26rpx;
+  height: 26rpx;
+  border-radius: 50%;
+  position: relative;
+  left: 15rpx;
+  margin-right: 20rpx;
+}
+
+.express-right {
+  width:90%;
+  color: #666;  
+  margin-left: 30rpx;
+  margin-right: 50rpx;
+}

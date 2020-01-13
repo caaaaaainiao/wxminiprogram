@@ -1,0 +1,50 @@
+<!--pages/myGold.wxml-->
+<!-- <text>pages/myGold.wxml</text> -->
+<view class="container">
+  <image class='bannerbg' src='/images/myGold-top.png'></image>
+  <view class='allGold'>
+    <text style="font-size:22rpx;">金币总额</text>
+    <view>{{goldNumber}}</view>
+  </view>
+  <!-- <image src='/images/yellow-mask.png' class="yellow-mask"></image> -->
+  <view class="overdue" wx:if="{{expireNumber}}">
+    <image src='/images/gold-star.png'></image>
+    <text style="color:rgba(246,211,103,1);font-size:26rpx;">{{expireNumber}}</text>
+    <text>金币将在</text>
+    <text>12月31日</text>
+    <text>过期，请尽快使用！</text>
+  </view>
+  <image src='/images/bannerbg.png' class="banner-body"></image>
+  <view class="gold-detail">
+    <view class='detail-top'>
+      <view class='see {{type==1?"see-border":""}}' bindtap="gotGold">已获得</view>
+      <view class='see {{type==2?"see-border":""}}' bindtap="useGold">已使用</view>
+    </view>
+    <scroll-view class='detail-content' bindscrolltolower="searchGotScrollLower" scroll-y="true" wx:if="{{type==1}}">
+      <block wx:for="{{getResult}}" wx:for-item="item" wx:key="item">
+        <view class="detail-list">
+          <view class='use-integral'>
+            {{item.memoDesc}}
+          </view>
+          <text class='use-time'>{{item.createDate}}</text>
+          <view class='get-goldNum'>
+            {{item.numberDesc}}
+          </view>
+        </view>
+      </block>
+    </scroll-view>
+    <scroll-view class='detail-content' bindscrolltolower="searchUseScrollLower" scroll-y="true" wx:if="{{type==2}}">
+      <block wx:for="{{useResult}}" wx:for-item="item" wx:key="item">
+        <view class="detail-list">
+          <view class='use-integral'>
+            {{item.memoDesc}}
+          </view>
+          <text class='use-time'>{{item.createDate}}</text>
+          <view class='get-goldNum'>
+            {{item.numberDesc}}
+          </view>
+        </view>
+      </block>
+    </scroll-view>
+  </view>
+</view>

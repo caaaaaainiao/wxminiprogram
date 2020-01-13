@@ -1,0 +1,96 @@
+<!--pages/mine/mine.wxml-->
+<!-- <text>pages/mine/mine.wxml</text> -->
+<view class='container'>
+  <view class='header'>
+    <swiper autoplay="true" interval="5000">
+      <block wx:for="{{banner}}" wx:for-item="item">
+        <swiper-item>
+          <image class="bg" bindtap="bannerRouter" src='{{item.imageUrl}}' data-type='{{item.redirectType}}' data-goal='{{item.redirectGoal}}'></image>
+        </swiper-item>
+      </block>
+    </swiper>
+    <view class='userimagebox'>
+      <image src='{{userInfo.userHeadPic}}' mode='aspectFill' wx:if="{{userInfo}}"></image>
+      <image src='/images/loginBtn.png' catchtap="login" mode='aspectFill' wx:else></image>
+    </view>
+    <view class='username'>{{userInfo.userName}}</view>
+    <view class='classify'>
+      <view class='option' bindtap='myTicket'>
+        <image class='option_pic' src='/images/mine_dyp.png'></image>
+        <view class='option_num' wx:if="{{ticketCount > 0}}">{{ticketCount}}</view>
+        <view class='option_title'>电影票</view>
+      </view>
+      <view class='option' bindtap='myFood'>
+        <image class='option_pic' src='/images/mine_xs.png'></image>
+        <view class='option_num' wx:if="{{goodsCount > 0}}">{{goodsCount}}</view>
+        <view class='option_title'>小食</view>
+      </view>
+      <view class='option' bindtap='myCoupon'>
+        <image class='option_pic' src='/images/mine_yhq.png'></image>
+        <view class='option_num' wx:if="{{couponsCount > 0 &&couponsCount<=99}}">{{couponsCount}}</view>
+        <view class='option_num' wx:elif="{{couponsCount > 99}}">99+</view>
+        <view class='option_title'>优惠券</view>
+      </view>
+      <view class='option' bindtap='myPrize'>
+        <image class='option_pic' src='/images/mine_jp.png'></image>
+        <view class='option_num' wx:if="{{giftCount > 0}}">{{giftCount}}</view>
+        <view class='option_title'>奖品</view>
+      </view>
+    </view>
+  </view>
+  <view class='list'>
+    <view class='entrance' bindtap='toMycard' style="border-bottom: 1rpx solid #DCDCDC">
+      <text>会员卡</text>
+      <image src='/images/gray_more.png'></image>
+    </view>
+    <view class='entrance' bindtap='toEquityCard'>
+      <text>权益卡</text>
+      <image src='/images/gray_more.png'></image>
+    </view>
+    <view class='division'></view>
+    <view class='entrance middlechild' bindtap='toWantsee'>
+      <text>想看的电影</text>
+      <view class='detail_num' wx:if="{{wantedFilmCount > 0}}">{{wantedFilmCount}}</view>
+      <image src='/images/gray_more.png'></image>
+    </view>
+    <view class='entrance middlechild' bindtap='toSeenMovie'>
+      <text>看过的电影</text>
+      <view class='detail_num' wx:if="{{lookedFilmCount > 0}}">{{lookedFilmCount}}</view>
+      <image src='/images/gray_more.png'></image>
+    </view>
+    <view class='entrance middlechild' bindtap='toCinemaDetail'>
+      <text>影院介绍</text>
+      <image src='/images/gray_more.png'></image>
+    </view>
+    <view class='entrance middlechild' bindtap='toCommon'>
+      <text>通用设置</text>
+      <image src='/images/gray_more.png'></image>
+    </view>
+    <view class='division'></view>
+  </view>
+  <view class="bottom">
+    <text bindtap="showModal">技术支持 @万画筒科技</text>
+  </view>
+</view>
+<view wx:if="{{support == true}}" class="mask" catchtouchmove="true">
+  <view class="support">
+    <image bindtap="closeM" class="close" src="/images/close.png" role="img"></image>
+    <view class="support-technical">
+      <view class="support-head">
+        <image class="support-icon" src="/images/support-icon.png" role="img"></image>
+        <view class="support-title">技术支持</view>
+      </view>
+      <view class="support-info">
+        <view>本软件由</view>
+        <view>浙江万画筒多媒体科技有限公司</view>
+        <view>提供技术支持</view>
+      </view>
+      <view class="support-phone" bindtap='phone' data-phone='{{supportPhone}}'>
+        <view style="padding: 12rpx 20rpx;letter-spacing: 2rpx;">
+          <text>合作电话：</text>
+          <text>{{supportPhone}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

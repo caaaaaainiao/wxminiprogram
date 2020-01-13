@@ -1,0 +1,23 @@
+<!--pages/seenMovie/seenMovie.wxml-->
+<!-- <text>pages/seenMovie/seenMovie.wxml</text> -->
+<!-- 看过的电影 -->
+<scroll-view scroll-y class='container' bindscrolltolower="searchScrollLower" wx:if="{{result.length > 0}}">
+  <view class='banner'>共{{result.length}}部影片</view>
+  <block wx:for="{{result}}" wx:for-item="movie" wx:key="movie">
+    <view class='movie'>
+      <image src='{{movie.imageUrl}}' class='moviepic'></image>
+      <view class='name'>{{movie.filmName}}</view>
+      <view class='time'>{{movie.publishDate}}</view>
+      <view class='btn' bindtap='comment' data-code="{{movie.filmCode}}" wx:if="{{movie.lookedStatus == 2}}">
+        评价
+      </view>
+      <view class='btn' bindtap='poster' wx:if="{{movie.lookedStatus == 3}}">
+        已评
+      </view>
+    </view>
+  </block>
+</scroll-view>
+<view class='empty' wx:else>
+  <image src='https://whtxcx.oss-cn-hangzhou.aliyuncs.com/min/empty1.png'></image>
+  <view class='emptytext'>亲，没有看过电影哦～</view>
+</view>

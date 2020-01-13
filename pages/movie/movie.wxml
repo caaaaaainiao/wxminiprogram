@@ -1,0 +1,34 @@
+<!--pages/movie/movie.wxml-->
+<!-- <text>pages/movie/movie.wxml</text> -->
+<!-- 放映厅 -->
+<view class='container'>
+  <view class='header'>
+    <!-- 轮播图 -->
+    <swiper class='bg' autoplay>
+      <block wx:for="{{banner}}" wx:for-item="pic" wx:key="pic">
+        <swiper-item>
+        <image bindtap="bannerRouter" src='{{pic.imageUrl}}' data-type='{{pic.redirectType}}' data-goal='{{pic.redirectGoal}}'></image>
+        </swiper-item>
+      </block>
+    </swiper>
+    <!-- 轮播图 --> 
+  </view>
+
+  <view class='list' wx:if="{{roomList.length>0}}">
+    <block wx:for="{{roomList}}" wx:for-item="room" wx:key="room" >
+      <view class='room' data-index="{{index}}" bindtap='roomin'>
+        <image class='listbg' src='{{room.filmPoster}}'></image>
+        <view class='box'>
+          <view class='moviename'>{{room.filmName}}</view>
+          <view class='address'>{{room.screenName}}</view>
+          <view class='movietime'>{{room.startTime}}-{{room.endTime}}</view>
+          <view class='roomin'>进入</view>
+        </view>
+      </view>
+    </block>
+  </view>
+  <view class='empty' wx:else>
+    <image src='https://whtxcx.oss-cn-hangzhou.aliyuncs.com/min/empty1.png'></image>
+    <view class='emptytext'>亲，没有电影放映哦～</view>
+  </view>
+</view>

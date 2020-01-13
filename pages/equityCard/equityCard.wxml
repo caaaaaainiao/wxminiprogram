@@ -1,0 +1,262 @@
+<view class='container'>
+  <view class='tabBar'>
+    <image class='bannerbg' src='/images/equityCard-head.png'></image>
+    <view class='toCard {{jump==1?"select-card":""}}' bindtap="showMemberCard">会员卡</view>
+    <view class='toEquity {{jump==2?"select-card":""}}' bindtap="showEquityCard">权益卡</view>
+  </view>
+  <!-- 会员卡 -->
+  <view class='memberCard' wx:if="{{myMemberCard}}">
+    <view class='header'>
+      <image wx:if="{{memberCardImage}}" src="{{memberCardImage}}" class='card'></image>
+      <image wx:else src='/images/newcard.png' class='card'></image>
+      <view class='cardnumber' style="color:white">No.
+        <text>{{cardInfo.cardNo==""?"- - -":cardInfo.cardNo}}</text>
+      </view>
+      <view class='balance' style="color:white">余额：
+        <text>{{cardInfo.cardNo==""?"- - -":cardInfo.balance}}</text>
+      </view>
+      <view class="refresh" bindtap="refresh" style="color:white" wx:if="{{show}}">
+        <image src='/images/refresh.png' class='refreshimg'></image>
+        <text>刷新余额</text>
+      </view>
+      <view class="integral" wx:if="{{show}}">
+        <text>积分：{{cardInfo.creditsAmount}}</text>
+      </view>
+    </view>
+    <view wx:if="{{cardInfo.cardNo ==''}}">
+      <view class='input'>
+        <input wx:if="{{ticketingSystemType == 1}}" placeholder-style='color:#888;' placeholder='输入您的会员卡号或手机号' bindinput="onInput"></input>
+        <input wx:else placeholder-style='color:#888;' placeholder='输入您的会员卡号' bindinput="onInput"></input>
+      </view>
+      <view class='input' style='margin:0 auto'>
+        <input placeholder-style='color:#888;' placeholder='输入您的会员卡密码' type='password' bindinput="onInput2"></input>
+      </view>
+      <input class='recommended-code' placeholder-style='color:#888;' placeholder='请输入推荐码，如没有可省略' bindinput="getBindCode" style="margin-bottom:45rpx;"></input>
+      <view class='bang' bindtap='bang'>绑 定 会 员 卡</view>
+      <view class='openCard' bindtap='openCard' wx:if="{{isShow}}">没有会员卡？在线开通，立享多重观影福利！</view>
+    </view>
+    <view wx:if="{{cardInfo.cardNo!=''}}">
+      <view class='control'>
+        <view class='card-cinema'>开卡影院：{{cardInfo.cinemaName}}</view>
+        <view class='record' bindtap='record'>充值记录
+          <image src='/images/in.png'></image>
+        </view>
+        <view class='style {{type == 1?"chosed":""}}' bindtap='changeTap' data-type='1'>充值</view>
+        <view class='progress'>
+          <view class='progressIn {{type == 2?"progressIn2":""}}'></view>
+        </view>
+        <view class='style {{type == 2?"chosed":""}}' bindtap='changeTap' data-type='2'>解绑</view>
+      </view>
+      <swiper style="height:400rpx;" duration="200" current="{{swiperIndex}}" bindchange='swiperChange'>
+        <swiper-item>
+          <view class='money'>
+            <block wx:for="{{rechargeRule}}" wx:for-item="sum" wx:key="sum">
+              <view class='sum {{sum.select == 1?"select":""}}' data-index="{{index}}" bindtap='chooseMoney'>
+                  ￥{{sum.rechargeAmount}}
+                <text class="tips" wx:if="{{sum.ruleMemo}}" data-index="{{index}}">
+                  *{{sum.ruleMemo}}
+                </text>
+              </view>
+            </block>
+          </view>
+          <input class='recommended-code' placeholder-style='color:#888;' placeholder='请输入推荐码，如没有可省略' bindinput="getCode"></input>
+          <view wx:if="{{activityText.length > 0}}" class="activityText">{{activityText}}</view>
+        </swiper-item>
+        <swiper-item>
+          <view class='tip'>
+            <text>*</text>解绑后将不再享受会员优惠价，也不能使用会员卡支付，请谨慎操作！ </view>
+          <view class='unbind' bindtap='untying'>解 绑</view>
+        </swiper-item>
+      </swiper>
+      <view class='recharge' bindtap='recharge' disabled="{{disabled}}">
+        充值
+      </view>
+
+    </view>
+    <!-- 查询余额会员卡密码 -->
+    <view class='mask' wx:if="{{showM}}">
+      <view class='cardpassword'>
+        <view>
+          <image src="/images/close.png" class='cancel' bindtap="closeM"></image>
+          <image src="/images/passwordlock.png" class='lock'></image>
+        </view>
+        <view>
+          <input type="password" bindinput="getpassword" placeholder-style='color:#888;text-align:center;font-size:18rpx;' placeholder='请输入会员卡密码' class='enter'></input>
+        </view>
+        <view class='line'></view>
+        <view class='sure' bindtap="query">
+          确定
+        </view>
+      </view>
+    </view>
+    <!-- 充值会员卡密码 -->
+    <view class='cardpassword' wx:if="{{passwordModle}}">
+      <view>
+        <image src="/images/close.png" class='cancel' bindtap="closeModle"></image>
+        <image src="/images/passwordlock.png" class='lock'></image>
+      </view>
+      <view>
+        <input type="password" bindinput="getpassword2" placeholder-style='color:#888;text-align:center;font-size:18rpx;' placeholder='请输入会员卡密码' class='enter'></input>
+      </view>
+      <view class='line'></view>
+      <view class='sure' bindtap="topUp">
+        确定
+      </view>
+    </view>
+  </view>
+
+  <!-- 权益卡 -->
+  <view class="equityCard" wx:if="{{myEquityCard}}">
+    <view class='equity-header' wx:if="{{equityCardShow==0}}">
+      <text class='equityCard-record' bindtap="equityRecord">购买记录</text>
+      <image class='card-bg' src="/images/equityCard-bg.png"></image>
+      <image class='equityCard-logo' src='{{logo}}' mode='aspectFill'></image>
+      <text class='equityCard-name'>{{nowCard.name}}</text>
+      <text class='equityCard-endTime'>有效期：{{nowCard.number}}{{nowCard.unit}}</text>
+      <view class="equityCard-balance">
+        <text>{{nowCard.expense}}</text>元</view>
+    </view>
+    <view class='userCard' wx:if="{{equityCardShow==1}}">
+      <image src="/images/equityCard-head.png" style="width:100%;height:330rpx;position:absolute;"></image>
+      <swiper interval="5000" indicator-dots="true" style="height: 420rpx;" current="{{equityCardIndex}}" bindchange="changeCard">
+        <block wx:for="{{equityCard}}" wx:for-item="item" wx:key="item">
+          <swiper-item>
+            <image class='userCard-bg' src="/images/equityCard.png"></image>
+            <image class='userCard-logo' src='{{logo}}' mode='aspectFill'></image>
+            <text class='userCard-name'>{{item.benefitCard.name}}</text>
+            <text class="userCard-num">{{equityCardIndex+1}}/{{equityCard.length}}</text>
+            <view class='userCard-info'>
+              <view>
+                <view>
+                  <text style="font-size:42rpx">{{item.totalDiscountMoney}}</text> 元
+                </view>
+                <text>累计已省</text>
+              </view>
+              <view wx:if="{{item.benefitCard.isFilmJoin == 1}}">
+                <view wx:if="{{item.benefitCard.isLimitFilm == 1 && item.benefitCard.numberFilm}}">
+                  <text style="font-size:42rpx">{{item.benefitCard.numberFilm}}</text> 张
+                </view>
+                <view wx:if="{{item.benefitCard.isLimitFilm == 0}}">
+                  <text style="font-size:42rpx">无限量</text>
+                </view>
+                <text wx:if="{{item.benefitCard.limitFilmUnit}}">每{{item.benefitCard.limitFilmUnit}}可购张数</text>
+              </view>
+            </view>
+            <text class='userCard-endTime'>有效期至: {{item.endDate}}</text>
+            <text class='userCard-status'>生效中</text>
+          </swiper-item>
+        </block>
+      </swiper>
+      <text class='userCard-tips'>权益卡为折扣卡，不可储值</text>
+    </view>
+    <view class="userCard-renew" wx:if="{{equityCardShow==1}}">
+      <text>续卡/开新卡</text>
+      <view class='renewCard' bindtap="newCard">立即查看</view>
+    </view>
+    <view class='equityCard-list' wx:if="{{equityCardShow==0}}">
+      <block wx:for="{{equityCard}}" wx:for-item="card" wx:key="card">
+        <view class='equityCard-list-container {{nowCard.id==card.id?"bgc":""}}' bindtap="chooseCard" data-index="{{index}}" data-id="{{card.id}}">
+          <view class='equityCard-list-title'>{{card.name}}</view>
+          <view class="equityCard-list-continue" wx:if="{{card.isContinue}}">续</view>
+          <view class="equityCard-list-recommend" wx:if="{{card.isRecommend == 1}}">荐</view>
+          <view class="equityCard-list-time">
+            <text>{{card.number}}{{card.unit}}</text>
+          </view>
+          <view class='equityCard-list-price'>
+            <view style="font-size: 30rpx;margin-top:5rpx;">￥</view>
+            <view>{{card.expense}}</view>
+          </view>
+          <view class='equityCard-list-memo'>{{card.simpleDesc}}</view>
+        </view>
+      </block>
+    </view>
+    <view class='equityCard-line'></view>
+    <view class='equityCard-privilege'>
+      <view class='equityCard-privilege-title'>
+        <view style="width:8rpx;height:36rpx;background:rgba(236,47,75,1);"></view>
+        <view style="position:absolute;left:30rpx;top:-1rpx;">权益卡特权</view>
+      </view>
+      <view class='equityCard-privilege-ticket' wx:if="{{equityCardShow == 1 && nowCard.benefitCard.filmSimpleDesc != ''}}">
+        <image src="/images/equity-ticket.png" style="width:72rpx;height:72rpx;position: absolute;"></image>
+        <view>
+          <view style="margin-bottom: 25rpx;">购票特惠</view>
+          <text style='color:rgba(136,136,136,1);font-size:24rpx;'>{{nowCard.benefitCard.filmSimpleDesc}}</text>
+        </view>
+      </view>
+      <view class='equityCard-privilege-ticket' wx:if="{{equityCardShow == 0 && nowCard.filmSimpleDesc != ''}}">
+        <image src="/images/equity-ticket.png" style="width:72rpx;height:72rpx;position: absolute;"></image>
+        <view>
+          <view style="margin-bottom: 25rpx;">购票特惠</view>
+          <text style='color:rgba(136,136,136,1);font-size:24rpx;'>{{nowCard.filmSimpleDesc}}</text>
+        </view>
+      </view>
+      <view class='equityCard-privilege-sell' wx:if="{{equityCardShow == 1 && nowCard.benefitCard.merchandiseSimpleDesc != ''}}">
+        <image src="/images/equity-sell.png" style="width:72rpx;height:72rpx;position: absolute;"></image>
+        <view>
+          <view style="margin-bottom: 25rpx;">卖品特惠</view>
+          <text style='color:rgba(136,136,136,1);font-size:24rpx;'>{{nowCard.benefitCard.merchandiseSimpleDesc}}</text>
+        </view>
+      </view>
+      <view class='equityCard-privilege-sell' wx:if="{{equityCardShow == 0 && nowCard.merchandiseSimpleDesc != ''}}">
+        <image src="/images/equity-sell.png" style="width:72rpx;height:72rpx;position: absolute;"></image>
+        <view>
+          <view style="margin-bottom: 25rpx;">卖品特惠</view>
+          <text style='color:rgba(136,136,136,1);font-size:24rpx;'>{{nowCard.merchandiseSimpleDesc}}</text>
+        </view>
+      </view>
+      <view class='equityCard-privilege-coupon' wx:if="{{equityCardShow == 0 && nowCard.couponSimpleDesc !=''}}">
+        <image src="/images/equity-ticket.png" style="width:72rpx;height:72rpx;position: absolute;"></image>
+        <view>
+          <view style="margin-bottom: 25rpx;">券包明细</view>
+          <text style='color:rgba(136,136,136,1);font-size:24rpx;'>{{nowCard.couponSimpleDesc}}</text>
+        </view>
+      </view>
+    </view>
+    <view class='equityCard-instruction' bindtap="showDesc">
+      <view class='equityCard-instruction-title'>
+        <view style="width:8rpx;height:36rpx;background:rgba(236,47,75,1);"></view>
+        <view style="position:absolute;left:30rpx;top:-1rpx;">使用说明</view>
+      </view>
+      <view class='equityCard-instruction-router'></view>
+    </view>
+    <scroll-view class='equityCard-instruction-info' scroll-y='true' wx:if="{{descShow}}">
+      <text style="line-height: 40rpx;" wx:if="{{equityCardShow == 1}}">{{nowCard.benefitCard.benefitDesc}}</text>
+      <text style="line-height: 40rpx;" wx:if="{{equityCardShow == 0}}">{{nowCard.benefitDesc}}</text>
+    </scroll-view>
+    <view class='equityCard-support'>
+      <view class='equityCard-support-title'>
+        <view style="width:8rpx;height:36rpx;background:rgba(236,47,75,1);"></view>
+        <view style="position:absolute;left:30rpx;top:-1rpx;">支持影院</view>
+      </view>
+      <view class="equityCard-support-memo">{{nowCard.cinemaName}}</view>
+      <view class='equityCard-support-router'></view>
+    </view>
+    <view class='equityCard-agreement' wx:if="{{equityCardShow==0}}">
+      <view class="operate">
+        <view class="agree" style="display: flex;align-items: center;color: #888888;">
+          <image src="/images/selected.png" style="width:30rpx;height:30rpx;"></image>
+          我已阅读并同意
+          <view bindtap="showMessage" style="color: rgba(0,159,255,1);height: auto;width: auto;display: block;flex: 1;">《影城权益卡协议》</view>
+        </view>
+      </view>
+      <view class='equityCard-agreement-open'>
+        <text style='position:absolute;left:39rpx;top:40rpx;'>总价：</text>
+        <view class='equityCard-agreement-open-price'>￥
+          <text>{{nowCard.expense}}</text>
+        </view>
+        <view class='equityCard-agreement-open-btn' bindtap="openEquityCard">立即开卡</view>
+      </view>
+    </view>
+  </view>
+  <view class='mask' wx:if="{{showEquityCardMessage}}">
+    <view class="rule-close" bindtap="close">
+      <image src="/images/close.png"></image>
+    </view>
+    <view class='rule-container'>
+      <text class='rule-title'>权益卡协议</text>
+      <scroll-view class="message" scroll-y='true'>
+        <text class='rule-context'>{{equityCardAgreement}}</text>
+      </scroll-view>
+    </view>
+  </view>
+</view>

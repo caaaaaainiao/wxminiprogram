@@ -1,0 +1,27 @@
+<!--pages/cardRecord/cardRecord.wxml-->
+<!-- <text>pages/cardRecord/cardRecord.wxml</text> -->
+<scroll-view class='container' scroll-y="true" bindscrolltolower="searchScrollLower">
+  <view wx:if="{{result.length>0}}">
+    <block wx:for="{{result}}" wx:for-item="record" wx:key="record">
+      <view class='record' wx:if="{{record.rechargeStatus == 1}}">
+        <view class='cardno'>充值成功</view>
+        <view class='time'>{{record.rechargeDate}}</view>
+        <view class='money'>
+          <text>+{{record.payAmount}}</text> 元
+        </view>
+        <view class='money2'>实际到账
+          <text>{{record.rechargeAmount}}</text>
+        </view>
+      </view>
+      <view class='record' wx:if="{{record.rechargeStatus == 2}}">
+        <view class='cardno'>充值失败-已退款</view>
+        <view class='time'>{{record.rechargeDate}}</view>
+        <view class='unmoney'>-{{record.payAmount}} 元</view>
+      </view>
+    </block>
+  </view>
+  <view class='empty' wx:else>
+    <image src='https://whtxcx.oss-cn-hangzhou.aliyuncs.com/min/empty3.png'></image>
+    <view class='emptytext'>亲，还没有充值哦～</view>
+  </view>
+</scroll-view>

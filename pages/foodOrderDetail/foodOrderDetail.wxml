@@ -1,0 +1,84 @@
+<!--pages/orderDetail/orderDetail.wxml-->
+<!-- <text>pages/orderDetail/orderDetail.wxml</text> -->
+<wxs module="filters" src="../../utils/fixed.wxs"></wxs>
+<!-- 影票订单详情 -->
+<view class='container'>
+  <image src='/images/bannerbg.png' class='bg'></image>
+  <view class='content'>
+    <view class='foodewm top'>
+      <view class='title'>取小食</view>
+      <image src='{{order.qrCode}}' class='ewm'></image>
+      <view style='height:40rpx'></view>
+      <block wx:for="{{order.merchandises}}" wx:for-item="detail" wx:key="detail">
+        <view class='food'>{{detail.merchandiseName}}
+          <text>x {{detail.merchandiseCount}}</text>
+        </view>
+      </block>
+      <view class='number'>领取码
+        <text wx:if="{{order.cancelStatus == 1 || order.deliveryStatus == 1 || order.refundStatus == 1}}">xxxxxx</text>
+        <text wx:else>{{order.printNo}}</text>
+      </view>
+      <view class='ticketGot' wx:if="{{order.cancelStatus==1}}">
+        <image src='/images/sales.png'></image>
+      </view>
+      <view class='ticketGot' wx:elif="{{order.refundStatus==1}}">
+        <image src='/images/refound.png'></image>
+      </view>
+      <view class='ticketGot' wx:elif="{{order.deliveryStatus==1}}">
+        <image src='/images/got.png'></image>
+      </view>
+    </view>
+    <image src='/images/ddbj.png' class='line'></image>
+    <!-- <view class='memo' wx:if="{{order.memo}}">
+      <view class='memobox'>
+        <view class='memotitle'>备注</view>
+        <view class='memotext'>{{order.memo}}</view>
+      </view>
+    </view> -->
+    <view class='other'>
+      <view class='address'>
+        <view class='storename'>{{order.cinemaName}}</view>
+        <view class='storeaddress'>{{order.address}}</view>
+        <image src='/images/phone.png' class='phone' bindtap='phone' data-phone='{{order.serviceMobile}}'></image>
+      </view>
+      <view class='address'>
+        <view class='storename'>实付金额</view>
+        <view class='money'>{{order.totalActualPrice}}元</view>
+        <view class='descripe'>原价：
+          <text>{{order.totalOriginalPrice}}元</text>
+        </view>
+        <view class='descripe' wx:if="{{order.totalActivityDiscount != 0}}">活动优惠：
+          <text>-{{order.totalActivityDiscount}}元</text>
+        </view>
+        <view class='descripe' wx:if="{{order.totalCouponDiscount != 0}}">优惠券优惠：
+          <text>-{{order.totalCouponDiscount}}元</text>
+        </view>
+        <view class='descripe'>订单号：{{order.orderNo}}
+        </view>
+        <view class='descripe' wx:if="{{order.payTime}}">购买时间：{{order.payTime}}
+        </view>
+        <view class='descripe'>手机号：{{order.userMobile}}
+        </view>
+        <view class='descripe' wx:if="{{order.payWay == 0}}">支付方式：微信支付
+        </view>
+        <view class='descripe' wx:if="{{order.payWay == 1}}">支付方式：会员卡支付
+        </view>
+        <view class='descripe' wx:if="{{order.submitMessage != ''}}">退款原因：{{order.submitMessage}}</view>
+      </view>
+      <view class='address' wx:if='{{order.cancelStatus == 1 || order.refundStatus == 1}}'>
+        <view class='storename'>退款金额</view>
+        <view class='money'>{{order.refundPrice}}元</view>
+        <view class='descripe'>退款订单号：{{order.orderNo}}
+        </view>
+        <view class='descripe' wx:if="{{order.cancelTime}}">退款时间：{{order.cancelTime}}
+        </view>
+      </view>
+      <view class='address' style=' border: none;'>
+        <view class='storename'>观影须知</view>
+        <view class='descripe'>1.请提前到达影院现场，找到自助取票机，打印纸质电影票，完成取票。</view>
+        <view class='descripe'>2.如现场自助取票机无法打印电影票，请联系影院工作人员处理。</view>
+        <view class='descripe'>3.凭打印好的纸质电影票，检票入场观影。</view>
+      </view>
+    </view>
+  </view>  
+</view>

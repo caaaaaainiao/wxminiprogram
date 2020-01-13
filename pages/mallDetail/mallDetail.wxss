@@ -1,0 +1,390 @@
+/* pages/mallDetail.wxss */
+#container{
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: auto;
+}
+
+.mall-img{
+  width: 100%;
+  height: 750rpx;
+  position: relative;
+  top: 0;
+  left: 0;
+}
+
+.mall-img image{
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.mall-info{
+  position: relative;
+  width: 100%;
+  height: 170rpx;
+  border-top: 1rpx dashed black;
+  border-bottom: 1rpx solid #DDD;
+}
+
+.mall-info view{
+  position: absolute;
+}
+
+.info-name{
+  left: 23rpx;
+  top: 37rpx;
+  width: 680rpx;
+  overflow: hidden;
+  text-overflow: ellipsis; 
+  white-space: nowrap;
+}
+
+.info-price{
+  left: 22rpx;
+  top: 111rpx;
+  color:rgba(236,47,75,1);
+  font-size:40rpx;
+}
+
+.item-gold-img{
+  width: 32rpx;
+  height: 32rpx;
+  position: relative;
+  bottom: 12rpx;
+  right: 4rpx;
+}
+
+.info-exchange{
+  right: 40rpx;
+  top: 117rpx;
+  color:rgba(136,136,136,1);
+  font-size:24rpx;
+}
+
+.instruction-titlle{
+  position: relative;
+  left: 10rpx;
+  top: 37rpx;
+  width: 200rpx;
+  height: 50rpx;
+  font-size: 15px;
+}
+
+.instruction-content{
+  position: relative;
+  left: 20rpx;
+  top: 50rpx;
+  width: 200rpx;
+  height: 50rpx;
+  font-size: 13px;
+}
+
+.instruction-img{
+  position: relative;
+  top: 80rpx;
+  width: 100%;
+  height: 750rpx;
+  margin-bottom: 98rpx;
+}
+
+.instruction-img image{
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.mall-change{
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  font-size: 26rpx;
+}
+
+.quick{
+  width: 100%;
+  height: 98rpx;
+}
+
+.quick-change{
+  position: absolute;
+  font-size: 15px;
+  color: #fff;
+  line-height: 98rpx;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.change-way{
+  width:750rpx;
+  /* height:400rpx; */
+  background:rgb(255, 255, 255);
+  border-radius:16rpx 16rpx 0px 0px;
+}
+
+.close{
+  position: absolute;
+  width: 40rpx;
+  height: 40rpx;
+  right: 20rpx;
+  top: 20rpx;
+}
+
+.mask{
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,.5);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 99;
+}
+
+.way-top{
+  height: 108rpx;
+  width: 100%;
+  text-align: center;
+  line-height: 108rpx;
+  color:rgba(43,43,43,1);
+  border-bottom: 1px solid rgba(221,221,221,1);
+}
+
+.way-content{
+  width: 100%;
+  height: 290rpx;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.sum{
+  height: 80rpx;
+  text-align: center;
+  font-size: 30rpx;
+  color: #888;
+  border: 2rpx solid rgba(136, 136, 136, 1);
+  border-radius: 35rpx;
+  margin-bottom: 80rpx;
+  margin-top: 80rpx;
+}
+
+.way-store{
+  width:540rpx;
+  height:80rpx;
+  background:rgba(255,255,255,1);
+  border:1px solid rgba(218,78,123,1);
+  border-radius:40rpx 0px 0px 40rpx;
+  margin-left: 56rpx;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow:ellipsis;
+}
+
+.pull{
+  width: 100rpx;
+  height: 80rpx;
+}
+
+.store-name{
+  font-size: 30rpx;
+  line-height: 80rpx;
+  margin-left: 36rpx;
+}
+
+.store-address{
+  font-size: 22rpx;
+  margin-right: 34rpx;
+  margin-left: 55rpx;
+  color: #888;
+}
+
+.select{
+  color: #da4e7b;
+  border: 2rpx solid #da4e7b;
+}
+
+.address-list{
+  width:500rpx;
+  height:640rpx;
+  background:rgba(255,255,255,1);
+  box-shadow:0px 0px 16rpx 0rpx rgba(4,4,4,0.3);
+  border-radius:20rpx 20rpx 0px 0px;
+  position: absolute;
+  bottom: 286rpx;
+  left: 92rpx;
+}
+
+.canUse{
+  width: 440rpx;
+  height: 118rpx;
+  border-bottom: 1rpx solid #DDDDDD;
+  position: relative;
+  left: 30rpx;
+}
+
+.place-name{
+  font-size: 30rpx;
+  color: #2B2B2B;
+  line-height: 1;
+  position: absolute;
+  top: 40rpx;
+  width: 320rpx;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow:ellipsis;
+}
+
+.place-address{
+  font-size: 22rpx;
+  color: #888888;
+  line-height: 1;
+  position: absolute;
+  top: 79rpx;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow:ellipsis;
+  width: 100%;
+}
+
+.place-choose{
+  width: 36rpx;
+  height: 36rpx;
+  position: absolute;
+  right: 44rpx;
+  top: 43rpx;
+}
+
+.place-unchoose{
+  width: 24rpx;
+  height: 24rpx;
+  border-radius: 50%;
+  border: 1rpx solid #312927;
+  position: absolute;
+  right: 40rpx;
+  top: 48rpx;
+}
+
+.merchants-info{
+  width: 100%;
+  /* height: 320rpx; */
+  position: relative;
+}
+
+.merchants-title{
+  width: 75%;
+  height: 100rpx;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin: 0 auto;
+}
+
+.merchants-detail{
+  padding-left: 40rpx;
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1rpx solid rgba(221,221,221,1);
+}
+
+.merchants-detail>view{
+  margin-bottom: 16rpx;
+}
+
+.notice-info{
+  width: 100%;
+  height: auto;
+  position: relative;
+  padding: 0 40rpx;
+}
+
+.notice-title{
+  width: 75%;
+  height: 100rpx;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin: 0 auto;
+}
+
+.notice-memo{
+  font-size: 26rpx;
+}
+
+.line{
+  width:100rpx;
+  height:1rpx;
+  background:rgba(136,136,136,1);
+}
+
+rich-text .rich-img {
+  width:100%;
+  height:auto;
+}
+
+.way-bottom {
+  width: 100%;
+  padding-left: 40rpx;
+  padding-right: 40rpx;
+  height: 390rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.add-info {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.add-name {
+  width: 290rpx;
+  height: 80rpx;
+  border-radius:12rpx;
+  border:1rpx solid rgba(170,170,170,1);
+  color: #AAAAAA;
+  text-align: center;
+}
+
+.add-phone {
+  width: 360rpx;
+  height: 80rpx;
+  border-radius:12rpx;
+  border:1rpx solid rgba(170,170,170,1);
+  color: #AAA;
+  text-align: center;
+}
+
+.add-pick {
+  width: 100%;
+  height: 80rpx;
+  border:1rpx solid rgba(170,170,170,1);
+  border-radius:12rpx;
+  color: #AAA;
+  text-align: center;
+  line-height: 80rpx;
+}
+
+.cinema-address-right,.cinema-phone-right {
+  font-size:20rpx;
+  color:rgba(49,41,39,1);
+  display: flex;
+  align-items: center;
+  position: absolute;
+  right: 40rpx;
+  bottom: 0;
+}
+
+.cinema-address-right image,.cinema-phone-right image{
+  width:30rpx;
+  height:30rpx;
+}

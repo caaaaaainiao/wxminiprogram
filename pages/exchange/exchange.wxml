@@ -1,0 +1,80 @@
+<!--pages/exchange.wxml-->
+<!-- <text>pages/exchange.wxml</text> -->
+<scroll-view class="container" bindscrolltolower="searchScrollLower" scroll-y="true">
+    <view class="exchange">
+      <view class='my-creditsAmount' wx:if="{{cardInfo.cardNo!=''}}">我的积分：{{cardInfo.creditsAmount}}</view>
+      <view class='my-creditsAmount' wx:else>我的积分：0</view>
+      <view class="exchange-content">
+        <text>输入要兑换的积分</text>
+        <input value="1" type="number" bindinput="importIntegral" class='get-creditsAmount' placeholder-style="color:rgba(0,159,255,1); line-height:100rpx;"></input>
+        <view class='creditsAmount-line'></view>
+        <view class="creditsAmount-rule">
+          <view>根据当前兑换比率可兑换金币</view>
+          <!-- <view>
+          <view class="exchange-rule">兑换规则</view>
+          <view class='exchange-mack'>?</view>
+        </view> -->
+        </view>
+        <view class="exchange-gold">
+          <image src="/images/my-gold.png" style="width:36rpx;height:36rpx;"></image>
+          <text>{{gold}}</text>
+        </view>
+        <button bindtap="showCard" class="to-exchange">一键兑换</button>
+        <text class='toDetail' bindtap="toDetail">兑换明细</text>
+      </view>
+    </view>
+    <view class='linetop'></view>
+    <view class='recommended'>
+      <view class='recommended-title'>
+        <image src="/images/dot2.png"></image>
+        <text>精选推荐</text>
+      </view>
+      <view class="content-data">
+        <view class="item" wx:for="{{goodsList}}" wx:for-index="index" wx:for-item="item">
+          <view class="item-details" bindtap="check" data-id="{{item.id}}">
+            <image src="{{item.imageUrl}}" class="item-img"></image>
+            <view class="item-name">{{item.name}}</view>
+            <view class="item-price">
+              <view wx:if="{{item.gold}}">
+                {{item.gold}}
+                <image src="/images/my-gold.png" class='item-gold-img'></image>
+              </view>
+              <view wx:if="{{item.or}}">
+                /
+              </view>
+              <view wx:if="{{item.price.lessgold}}">
+                {{item.price.lessgold}}
+                <image src="/images/my-gold.png" class='item-gold-img'></image>
+              </view>
+              <view wx:if="{{item.and}}">
+                +
+              </view>
+              <view wx:if="{{item.money}}">
+                ￥{{item.money}}
+              </view>
+            </view>
+            <view class='old-price' wx:if="{{item.originalPrice}}">
+              ￥{{item.originalPrice}}
+            </view>
+            <!-- <view class='item-btn'>
+              立即兑换
+            </view> -->
+          </view>
+        </view>
+      </view>
+    </view>
+    <!-- 会员卡密码 -->
+    <view class='cardpassword' wx:if="{{passwordModle}}">
+      <view>
+        <image src="/images/close.png" class='cancel' bindtap="closeModle"></image>
+        <image src="/images/passwordlock.png" class='lock'></image>
+      </view>
+      <view>
+        <input type="password" bindinput="getpassword2" placeholder-style='color:#888;text-align:center;font-size:18rpx;' placeholder='请输入会员卡密码' class='enter'></input>
+      </view>
+      <view class='line'></view>
+      <view class='sure' bindtap="change">
+        确定
+      </view>
+    </view>
+</scroll-view>

@@ -1,0 +1,125 @@
+<!--pages/sell/sell.wxml-->
+<!-- <text>pages/sell/sell.wxml</text> -->
+<!--index.wxml-->
+<view class="container">
+  <image class='bannerbg' src='/images/indexbanner.png'></image>
+  <view class='content'>
+    <view class='userimage'>
+      <image src='{{userInfo.userHeadPic}}' mode='aspectFill' wx:if="{{userInfo}}"></image>
+      <image catchtap="login" mode="aspectFill" src="/images/loginBtn.png" wx:else></image>
+    </view>
+    <view class='bottom'>
+      <view class='messages'>
+        <view class="leftBlock" bindtap="toGold">
+          <text class='title'>金币</text>
+          <text class='number' wx:if="{{goldNumber!=null&&goldNumber>=0}}">{{goldNumber}}</text>
+          <text class='number' wx:else>---</text>
+        </view>
+        <view class="middleBlock">
+          <text>{{userInfo.userName}}</text>
+        </view>
+        <view class="rightBlock" bindtap='toCard'>
+          <text class='title'>余额</text>
+          <text class='number' wx:if="{{balance!=null&&balance>=0}}">{{balance}}</text>
+          <text class='number' wx:else>---</text>
+        </view>
+      </view>
+      <view class='location'>{{lookcinemaname}}</view>
+      <view class='resetLocation' bindtap='getPlace'>
+      </view>
+      <view class='foodtype'>取餐方式</view>
+      <view class='types'>
+        <view class='foodtype1' bindtap='chooseType' data-type="0">
+          <image src='https://whtxcx.oss-cn-hangzhou.aliyuncs.com/min/type1.png' class='type'></image>
+          <view class='typetext'>柜台自取</view>
+          <view class='selectarea'>
+            <block wx:if="{{sendtype == 0}}">
+              <image src='/images/check.png'></image>
+            </block>
+          </view>
+        </view>
+        <view class='foodtype2' wx:if="{{setType == 3}}" bindtap='chooseType' data-type="2">
+          <image src='https://whtxcx.oss-cn-hangzhou.aliyuncs.com/min/type2.png' class='type'></image>
+          <view class='typetext'>送至影厅座位</view>
+          <view class='selectarea'>
+            <block wx:if="{{sendtype == 2}}">
+              <image src='/images/check.png'></image>
+            </block>
+          </view>
+        </view>
+        <view class='foodtype2' wx:else bindtap='chooseType' data-type="1">
+          <image src='https://whtxcx.oss-cn-hangzhou.aliyuncs.com/min/type2.png' class='type'></image>
+          <view class='typetext'>送至影厅门口</view>
+          <view class='selectarea'>
+            <block wx:if="{{sendtype == 1}}">
+              <image src='/images/check.png'></image>
+            </block>
+          </view>
+        </view>
+      </view>
+      <view class='foodMessage' wx:if="{{sendtype == 2&&detailArr.length>0}}">{{detailArr}}
+        <text>修改</text>
+      </view>
+      <image src='/images/sell-btn.png' class='orderbtn' bindtap='start'></image>
+    </view>
+  </view>
+  <view class='checkplace' wx:if="{{startChoose}}">
+    <view class='checkcontent'>
+      <image src='/images/icon.png' class='check_icon'></image>
+      <image src='/images/close.png' class='close' bindtap='close'></image>
+      <view class='checktext'>
+        <text>选择影厅</text>
+      </view>
+      <view class='checkbox'>
+        <view class='checkoptions'>
+          <block wx:for="{{screenList}}" wx:for-item="screen" wx:key="screen">
+            <view class='option {{screen.foodcheck?"checkedoption":""}}' bindtap="getScreen" data-index="{{index}}" data-name="{{screen.screenName}}">{{screen.screenName}}</view>
+          </block>
+        </view>
+      </view>
+      <view class='checkTip'>为不打扰其他观众观看影片，餐品仅送至您的影厅门口 请您在收到取餐通知后前来领取 </view>
+      <view class='checkover {{isOk?"checkall":""}}' bindtap="sureChoose">确 定</view>
+    </view>
+  </view>
+
+  <view class="checkplace" wx:if="{{show}}">
+    <view class="checkSeat">
+      <image src="/images/closePrize.png" class="closeSeat" bindtap="closeCheck"></image>
+      <view class="check-head" wx:if="{{noTicket}}">选择座位</view>
+      <view class="check-head" wx:if="{{hasTicket}}">智能匹配座位</view>
+      <view class="check-content" wx:if="{{noTicket}}">
+        <view class="noSeat">未检测到您的影片信息，请选择您的座位</view>
+        <picker class="check-screen" bindchange="changeScreen" value="{{index}}" range="{{checkScreenList}}" range-key="screenName">
+          <image class="check-screen-img" src="/images/checkScreen.png"></image>
+          <view class="checkNowScreen">
+            {{checkScreenList[index].screenName}}
+          </view>
+        </picker>
+        <picker class="check-seat" mode="multiSelector" bindchange="changeSeat" value="{{multiIndex}}" range="{{multiArray}}">
+          <image class="check-screen-img" src="/images/checkSeat.png"></image>
+          <view class="checkNowScreen">
+            {{multiArray[0][multiIndex[0]]}},{{multiArray[1][multiIndex[1]]}}
+          </view>
+        </picker>
+        <view class="sureSeat">请确保您此时正在座位上!</view>
+        <view class='checkSure' bindtap="checkSeat">确 定</view>
+      </view>
+      <view class="check-content" wx:if="{{hasTicket}}">
+        <view class="otherSeat" bindtap="chooseOther">其他座位</view>
+        <view class="check-info">
+          <view>{{seatFilmName}}</view>
+          <view>{{seatSessionTime}},{{seatScreenName}}</view>
+        </view>
+        <view class="choose-check-seat" wx:for="{{seatSeatName}}" wx:for-item="name" wx:key="name">
+          <view class="choose-check-seat-detail" bindtap="chooseSeat" data-index="{{index}}">
+            <text style="float:left">{{name}}</text>
+            <image class="checkImg" wx:if="{{seatIndex == index}}" src="/images/check.png" role="img"></image>
+            <view class="checkStatus" wx:else style="float:right"></view>
+          </view>
+        </view>
+        <view class="sureSeat2">请确保您此时正在座位上!</view>
+        <view class='checkSure' bindtap="checkSeat2">确 定</view>
+      </view>
+    </view>
+  </view>
+</view>

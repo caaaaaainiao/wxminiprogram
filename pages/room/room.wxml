@@ -1,0 +1,104 @@
+<!--pages/room/room.wxml-->
+<!-- <text>pages/room/room.wxml</text> -->
+<view class='container'>
+  <view class='header'>
+    <view class='bg' style='background:url({{movie.filmPoster}}) no-repeat;'></view>
+    <image src='{{movie.filmPoster}}' class='moviepic'></image>
+    <view class='moviename'>{{movie.filmName}}</view>
+    <view class='movieroom'>{{movie.screenName}}</view>
+    <view class='movietime'>{{movie.startTime}}-{{movie.endTime}}</view>
+    <view class='moviearea'>{{cinema}}</view>
+    <view class='time'>
+      <image src='/images/time2.png'></image>
+      {{endTime}}
+    </view>
+  </view>
+  <view class='content' style='height:{{height}}px'>
+    <block wx:for="{{screenText}}" wx:for-item="aisle" wx:key="aisle">
+      <view class='row'>
+        <block wx:for="{{aisle.words}}" wx:for-item="message" wx:key="message">
+          <view class='bullet {{message.self?"self":""}} {{message.role==2?"role2":""}}' style='animation:first 8.8s linear {{message.time}}s'>
+            <view class='pic'>
+              <image src='{{message.img}}'></image>
+            </view>
+            <view><text wx:if="{{message.role==2}}">管理员:</text>{{message.text}}</view>
+          </view>
+        </block>
+      </view>
+    </block>
+  </view>
+  <view class='bottom' wx:if="{{role == 1}}">
+    <view class='box'>
+      <input placeholder='发言喽' placeholder-style='color:#eee;' bindinput='setText' value='{{text}}' maxlength='20'/>
+    </view>
+    <image src='/images/word.png' class='btn' bindtap='send'></image>
+  </view>
+  <view class='bottom' wx:if="{{role == 2}}">
+    <view class='box2'>
+      <input placeholder='发言喽' placeholder-style='color:#eee;' bindinput='setText' value='{{text}}' maxlength='20' />
+    </view>
+    <image src='/images/gift.png' class='gift' bindtap='sendgifts'></image>
+    <image src='/images/word.png' class='btn' bindtap='send'></image>
+  </view>
+  <!-- 我的奖品 -->
+  <image class='myprize' src='/images/myprize.png' bindtap='getPrize'></image>
+  <!-- 礼品列表 -->
+  <view class='giftBox' wx:if="{{showGifts}}">
+    <view class='giftList'>
+      <image class='close' src='/images/close.png' bindtap='close'></image>
+      <block wx:if='{{gifts.length>0}}'>
+        <view class='gift2' wx:for="{{gifts}}" wx:for-item="gift" wx:key="gift">
+          <image src='{{gift.imageUrl}}' class='pic2'></image>
+          <view class='name'>{{gift.name}}</view>
+          <view class='num'>{{gift.groupNumber}} * {{gift.singleNumber}}</view>
+          <image src='/images/sendGift.png' class='sendGift' bindtap="sendGift" data-id='{{gift.id}}' data-type='{{gift.type}}' data-index='{{index}}'></image>
+        </view>
+      </block>
+      <view wx:else style="text-align: center;color:#ccc">
+        暂无奖品
+      </view>
+      <!-- <block wx:for="{{gifts.coupons}}" wx:for-item="ticket" wx:key="ticket">
+        <view class='gift2'>
+          <image src='/images/ticket.png' class='pic3'></image>
+          <view class='name'>{{ticket.couponsName}}</view>
+          <view class='num'>{{ticket.sendNumber}}</view>
+          <image src='/images/sendGift.png' class='sendGift' bindtap="sendGift" data-id='{{ticket.id}}' data-type='{{ticket.giftType}}'></image>
+        </view>
+      </block> -->
+    </view>
+  </view>
+  <view class='showGift' wx:if="{{showGift}}">
+    <image class='red' src='https://whtxcx.oss-cn-hangzhou.aliyuncs.com/min/red.png' data-id='{{prizeId}}' bindtap='tapRed'></image>
+    <image class='closeGift' src='/images/closeGift.png' bindtap='closeGift'></image>
+  </view>
+  <view class='giftnum' wx:if="{{showGift2&&role==2}}" data-id='{{prizeId}}'>
+    <image src='/images/leftgift.png' class='leftgift'></image>
+    <view class='giftNum'>{{giftNum}}</view>
+  </view>
+  <!-- 奖品列表 -->
+  <view class='prizeBox' wx:if="{{showPrize}}">
+    <view class='prizeContet'>
+      <view class='prizeList'>
+        <view wx:if='{{prizeList.length>0}}'>
+          <block wx:for="{{prizeList}}" wx:for-item="prize" wx:key="prize">
+            <view class='prize' wx:if="{{prize.giftType==1}}">
+              <image class='pic2' src='{{prize.imageUrl}}'></image>
+              <view class='prizename'>{{prize.name}}</view>
+              <view class='save'>{{prize.guideDesc}}</view>
+            </view>
+            <view class='prize' wx:else>
+              <image class='pic4' src='{{prize.imageUrl}}'></image>
+              <view class='prizename'>{{prize.name}}</view>
+              <view class='save'>{{prize.guideDesc}}</view>
+            </view>
+          </block>
+        </view>
+        <view class="empty" wx:else>
+          <image src="/images/no-prize.png" role="img"></image>
+          <view class="emptytext">亲，没有奖品哦～</view>
+        </view>
+      </view>
+      <image class='closePrize' src='/images/closePrize.png' bindtap='closePrzie'></image>
+    </view>
+  </view>
+</view>

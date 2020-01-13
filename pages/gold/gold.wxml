@@ -1,0 +1,99 @@
+<!--gold.wxml-->
+<!-- <text>gold.wxml</text> -->
+<scroll-view class="container" bindscrolltolower="searchScrollLower" scroll-y="true">
+    <view class="top">
+      <swiper autoplay="true" interval="5000" style="height: 100%">
+        <block wx:for="{{banner}}" wx:for-item="item">
+          <swiper-item>
+            <image bindtap="bannerRouter" class="bg" src="{{item.imageUrl}}" data-type='{{item.redirectType}}' data-goal='{{item.redirectGoal}}'></image>
+          </swiper-item>
+        </block>
+      </swiper>
+    </view>
+    <view class="gold">
+      <!-- <image src="/images/ellipse.png" class="ellipse"></image> -->
+      <view class="my-gold" bindtap="toMyGold">
+        <image src="/images/my-gold.png" class="gold-img"></image>
+        <text style="font-size:13px;">我的金币</text>
+        <text style="font-size:16px;color:rgba(236,47,75,1);" wx:if="{{goldNumber}}">{{goldNumber}}</text>
+        <text style="font-size:16px;color:rgba(236,47,75,1);" wx:else>0</text>
+        <!-- <text style="color:rgb(136,136,136)">></text> -->
+      </view>
+    </view>
+    <view class="activy">
+      <view bindtap="sign">
+        <image src="/images/sign.png"></image>
+        <text>签到送金币</text>
+      </view>
+      <view bindtap="rotary">
+        <image src="/images/rotary.png"></image>
+        <text>金币大转盘</text>
+      </view>
+      <view bindtap="packege">
+        <image src="/images/packege.png"></image>
+        <text>互动红包</text>
+      </view>
+      <view bindtap="share">
+        <image src="/images/share.png"></image>
+        <text>邀请好友</text>
+      </view>
+      <view bindtap="exchange">
+        <image src="/images/exchange.png"></image>
+        <text>积分换金币</text>
+      </view>
+    </view>
+    <view style="width:100%;height:20rpx;background:rgba(238,238,238,1);">
+    </view>
+    <view class='recommend'>
+      <view class='recommend-title'>
+        <image src="/images/dot2.png"></image>
+        <text>今日大牌</text>
+      </view>
+      <view class='recommend-banner' wx:if="{{recommend.length>0}}">
+        <view class='recommend-banner-content' wx:for="{{recommend}}" wx:for-index="index" wx:for-item="item" data-id="{{item.id}}" bindtap="check">
+          <image src="{{item.imageUrl}}" class='recommend-banner-img'></image>
+          <view class='recommend-banner-title'>
+            <view class='recommend-banner-name'>{{item.name}}</view>
+            <view class='recommend-banner-price'>
+              <text wx:if="{{item.gold}}">{{item.gold}}</text>
+              <image wx:if="{{item.gold}}" src="/images/my-gold.png" class='gold-price'></image>
+              <text wx:if="{{item.gold&&item.money}}">+</text>
+              <text wx:if="{{item.money}}">￥{{item.money}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view style="width:100%;height:20rpx;background:rgba(238,238,238,1);">
+    </view>
+    <view class="content-data">
+      <view class="item" wx:for="{{goodsList}}" wx:for-index="index" wx:for-item="item">
+        <view class="item-details" data-id="{{item.id}}" bindtap="check">
+          <image src="{{item.imageUrl}}" class="item-img"></image>
+          <view class="item-name">{{item.name}}</view>
+          <view class="item-price">
+            <view wx:if="{{item.gold}}">
+              {{item.gold}}
+              <image src="/images/my-gold.png" class='item-gold-img'></image>
+            </view>
+            <view wx:if="{{item.or}}">
+              /
+            </view>
+            <view wx:if="{{item.price.lessgold}}">
+              {{item.price.lessgold}}
+              <image src="/images/my-gold.png" class='item-gold-img'></image>
+            </view>
+            <view wx:if="{{item.and}}">
+              +
+            </view>
+            <view wx:if="{{item.money}}">
+              ￥{{item.money}}
+            </view>
+          </view>
+          <view class='old-price' wx:if="{{item.originalPrice}}">
+            ￥{{item.originalPrice}}
+          </view>
+        </view>
+      </view>
+    </view>
+</scroll-view>

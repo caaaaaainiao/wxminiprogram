@@ -1,0 +1,136 @@
+<!--pages/orderGoods.wxml-->
+<!-- <text>pages/orderGoods.wxml</text> -->
+<view id="container">
+  <view class='goods'>
+    <image src='{{infomation.imageUrl}}' class='goodspic'></image>
+    <view class='goodsname'>{{infomation.commodityName}}</view>
+    <view class="goodsprice" wx:if="{{infomation.gold && !infomation.money}}">
+      {{infomation.gold}}
+      <image src="/images/my-gold.png" class='item-gold-img'></image>
+    </view>
+    <view class="goodsprice" wx:elif="{{infomation.money && infomation.gold}}">
+      {{infomation.gold}}
+      <image src="/images/my-gold.png" class='item-gold-img'></image>
+      +￥ {{infomation.money}}
+    </view>
+    <view class="goodsprice" wx:elif="{{infomation.money && !infomation.gold}}">
+      ￥{{infomation.money}}
+    </view>
+    <view class='goodsnum '>
+      <text>数量：{{infomation.count}}</text>
+    </view>
+  </view>
+  <view class='gray_line'></view>
+  <view class='phone' wx:if="{{invite}}">
+    <view class='phonetext'>取货门店</view>
+    <view class='tip' wx:if="{{infomation.commodityType == 1 || infomation.commodityType == 4}}">请在我的奖品中查看</view>
+    <view class='tip' wx:if="{{infomation.commodityType == 2 || infomation.commodityType == 3}}">请在我的优惠券中查看</view>
+    <view class='shopname'>{{infomation.cinemaName}}</view>
+    <view class='shopaddress'>{{infomation.address}}</view>
+  </view>
+  <view class='phone' wx:if="{{mail}}">
+    <view class='phonetext'>联系人：{{infomation.name}}</view>
+    <view class='tip'>手机号：{{phoneNumber}}</view>
+    <view class='shopname'>{{infomation.region}}</view>
+    <view class='shopaddress'>{{infomation.address}}</view>
+  </view>
+  <view class='gray_line'></view>
+  <view class='phone' wx:if="{{invite}}">
+    <view class='phonetext'>手机号</view>
+    <!-- <view class='tip'>用于接收送餐短信通知</view> -->
+    <view class='phonenum'>
+      <input value='{{phoneNumber}}' bindinput='changePhone' type='number' />
+      <image src='/images/gray_more.png'></image>
+    </view>
+  </view>
+  <view class='gray_line' wx:if="{{invite}}"></view>
+  <view class='phone' bindtap='messageshow'>
+    <view class='phonetext'>备注</view>
+    <view class='tip' wx:if="{{userMessage.length>0}}">{{userMessage}}</view>
+    <view class='tip' wx:else>如有特殊需求请填写备注</view>
+    <view class='phonenum' style='color:#68AEEA'>
+      编辑
+      <image src='/images/gray_more.png'></image>
+    </view>
+  </view>
+  <view class='gray_line'></view>
+  <view class='option'>
+    兑换商品须知
+  </view>
+  <view class='notice'>
+    <text>
+      {{infomation.memo}}
+    </text>
+  </view>
+  <view class='bottom'>
+    <view class='price'>
+      <view class='right'>
+        <text style="position: absolute;left: 40rpx;">应付</text>
+        <view class="numpay" wx:if="{{infomation.gold && !infomation.money}}">
+          {{infomation.gold}}
+          <image src="/images/my-gold.png" class='item-gold-img-bottom'></image>
+        </view>
+        <view class="numpay" wx:elif="{{infomation.money && infomation.gold}}">
+          {{infomation.gold}}
+          <image src="/images/my-gold.png" class='item-gold-img-bottom'></image>
+          +￥ {{infomation.money}}
+        </view>
+        <view class="numpay" wx:elif="{{infomation.money && !infomation.gold}}">
+          ￥{{infomation.money}}
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class='btn' bindtap='pay'>立即支付</view>
+
+  <!-- 成功弹窗 -->
+  <view class='mask' wx:if="{{winning}}">
+    <view class="winning-close" bindtap="winningClose">
+      <image src="/images/close.png"></image>
+    </view>
+    <view class='winning-container'>
+      <image src="{{infomation.imageUrl}}" class='winning-img'></image>
+      <text class='winning-text'>您已成功兑换</text>
+      <text class='winning-name'>{{infomation.commodityName}}</text>
+      <text class='winning-tips'>请进入个人中心查看</text>
+      <button class='winning-btn' wx:if="{{infomation.commodityType == 1 || infomation.commodityType == 4}}" bindtap="got">立即查看</button>
+      <button class='winning-btn' wx:if="{{infomation.commodityType == 2 || infomation.commodityType == 3}}" bindtap="use">立即查看</button>
+    </view>
+  </view>
+
+    <!-- 会员服务协议 -->
+  <view class='mask' wx:if="{{showMemberCardMessage}}">
+    <view class="rule-close" bindtap="close">
+      <image src="/images/close.png"></image>
+    </view>
+    <view class='rule-container'>
+      <text class='rule-title'>会员服务协议</text>
+      <scroll-view class="message" scroll-y='true'>
+        <text class='rule-context'>{{memberCardAgreement}}</text>
+      </scroll-view>
+    </view>
+  </view>
+
+  <!-- 领取奖品 -->
+  <view class='mask' wx:if="{{userPrize}}">
+    <view class="use-close" bindtap="useClose">
+      <image src="/images/close.png"></image>
+    </view>
+    <view class='use-container'>
+      <text class='use-title'>请至前台由工作人员输入兑换码领取</text>
+      <input class='use-inp' placeholder="输入兑换码" bindinput="getCode"></input>
+      <view class="use-btn" bindtap="exchange">核销</view>
+    </view>
+  </view>
+
+  <!-- 备注 -->
+  <view class='black2' wx:if="{{messageshow}}">
+    <view class='add2'>
+      <image class='close2' src='/images/close.png' bindtap='closeMessageshow'></image>
+      <view class='input2' style='height:160rpx;padding-right:30rpx;'>
+        <textarea placeholder-style="color:#888;line-height:80rpx;" value="{{userMessage}}" placeholder='请输入备注' maxlength='100' bindinput='setMessage'></textarea>
+      </view>
+      <view class='submit2' bindtap='closeMessageshow'>确 定</view>
+    </view>
+  </view>
+</view>

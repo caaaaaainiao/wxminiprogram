@@ -1,0 +1,19 @@
+<!--pages/foodSuccess/foodSuccess.wxml-->
+<!-- <text>pages/foodSuccess/foodSuccess.wxml</text> -->
+<!-- 卖品支付成功 -->
+<view class='container'>
+ <view class='header'>
+    <image src='/images/success.png' class='icon'></image>
+    <view class='result'>购买成功</view>
+    <view class='check' bindtap='look'>查看订单</view>
+    <view class='line'></view>
+ </view>
+
+  <swiper autoplay="true" interval="5000">
+    <block wx:for="{{banner}}" wx:for-item="item">
+      <swiper-item>
+        <image class="banner" bindtap="bannerRouter" src='{{item.imageUrl}}' data-type='{{item.redirectType}}' data-goal='{{item.redirectGoal}}'></image>
+      </swiper-item>
+    </block>
+  </swiper>
+</view>

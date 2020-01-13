@@ -1,0 +1,25 @@
+<!--pages/phoneYZM.wxml-->
+<!-- <text>pages/phoneYZM.wxml</text> -->
+<view class='container'>
+  <image src="{{logo}}" class='logo'></image>
+  <view class='content'>
+    <view class='content-number'>
+      <image src="/images/phone_icon.png" class='icon'></image>
+      <input bindinput="getMobile" placeholder-class="place-holder" placeholder="输入手机号" class='numberInp'></input>
+    </view>
+    <view class='content-number'>
+      <image src="/images/icon_num.png" class='icon'></image>
+      <input placeholder-class="place-holder" maxlength="6" type="number" placeholder="输入验证码" class='numberInp' bindinput="getCodeNumber"></input>
+      <view class='code' bindtap="getCode">{{codes}}</view>
+    </view>
+  </view>
+  <image src="/images/film.png" class='bg'></image>
+  <image src="/images/btn_bg.png" class='login' bindtap="login"></image>
+</view>
+
+<!-- 优惠券弹窗 -->
+<view class="img" wx:if="{{!modalHidden}}" bindtap="modalCandel">
+  <view catchtap="modalConfirm" class="hiddenImg">
+    <image src="{{image}}"></image>
+  </view>
+</view>

@@ -1,0 +1,50 @@
+<!--pages/share.wxml-->
+<!-- <text>pages/share.wxml</text> -->
+<view class="container">
+  <view class='share-fn'>
+    <view class='fn-banner'>
+      <view class='top-img' wx:if="{{banner.length>0}}">
+        <swiper autoplay="true" interval="5000" style="height: 100%">
+          <block wx:for="{{banner}}" wx:for-item="item">
+            <swiper-item>
+              <image class="bg" bindtap="bannerRouter" src='{{item.imageUrl}}' data-type='{{item.redirectType}}' data-goal='{{item.redirectGoal}}'></image>
+            </swiper-item>
+          </block>
+        </swiper>
+      </view>
+      <!-- <image src="/images/share-banner.png" class='top-img' wx:else></image> -->
+    </view>
+    <view class='line'></view>
+    <view class='fn-invitation'>
+      <view class='invitation-btn'>
+        <button open-type="share">去邀请</button>
+      </view>
+    </view>
+    <view class='line'></view>
+  </view>
+  <view class='firends-list'>
+    <view wx:if="{{shareGold.registerUserInfos.length>0}}">
+      <image src="/images/board.png" class='board'></image>
+      <image src="{{userInfo.userHeadPic}}" class='friend-icon'></image>
+      <view class='friends-info-list'>
+        <view class='friends-title'>好友</view>
+        <scroll-view scroll-y="true" style="height:600rpx;">
+          <block wx:for="{{shareGold.registerUserInfos}}" wx:for-item="friend" wx:key="friend">
+            <view class='friends-info'>
+              <image src="{{friend.headImageUrl}}" class='friends-info-headUrl'></image>
+              <view class='friends-info-status'>
+                <text class='friends-info-name'>{{friend.nickName}}</text>
+                <text>已注册</text>
+              </view>
+              <view class='friends-info-number'>已领取{{friend.acquireNumber}}金币</view>
+            </view>
+          </block>
+        </scroll-view>
+      </view>
+    </view>
+    <view wx:else>
+      <image src="/images/no-friend.png" class='friend-icon'></image>
+      <text class="no-one">还没有好友成功注册哦~</text>
+    </view>
+  </view>
+</view>

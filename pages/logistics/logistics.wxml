@@ -1,0 +1,26 @@
+<!--pages/logistics.wxml-->
+<!-- <text>pages/logistics.wxml</text> -->
+<view class="container">
+  <view class="head">
+    <image src="/images/courier.png" class="courier"></image>
+    <view class="basic-info">
+      <view class="companyName">{{result.companyName}}</view>
+      <view style="margin-bottom: 10rpx;">快递单号：{{result.number}}</view>
+      <view style="margin-bottom: 10rpx;">订单编号：{{result.orderNo}}</view>
+      <view class="address">收货地址：{{result.address}}</view>
+    </view>
+  </view>
+  <view class="line"></view>
+  <view class='logisit' wx:for="{{result.logisticsList}}" wx:key="key" wx:for-item='item'>
+    <image src="/images/complete.png" class='dot-shou {{item.display==0?"":"dot_two"}}' wx:if="{{index==0}}"></image>
+    <view class='express-middle-axis' wx:else>
+      <view class='dot-closing' wx:if='{{item.display==1}}'>></view>
+      <view class='dot-closing_two' wx:else></view>
+      <view class='online-top-closing'></view>
+    </view>
+    <view class='express-right'>
+      <view class='express-status-address {{index==0?"color":"color_second"}}'>{{item.context}}</view>
+      <view class='express-statusing {{index==0?"color":"color_second"}}'>{{item.time}}</view>
+    </view>
+  </view>
+</view>

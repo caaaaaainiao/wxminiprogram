@@ -1,0 +1,53 @@
+<!--pages/success/success.wxml-->
+<!-- <text>pages/success/success.wxml</text> -->
+<!-- 购票支付成功 -->
+<view class='container'>
+  <view class='header'>
+    <image src='/images/success.png' class='icon'></image>
+    <view class='result'>购票成功</view>
+    <view class='detail'>{{movieName}}
+      <text>({{count}}张)</text>
+    </view>
+    <view class='check' bindtap='look'>查看电影票</view>
+    <view class='line'></view>
+  </view>
+  <view wx:if="{{goodsOrder}}">
+  <block wx:for="{{goodsOrder.merchandiseVos}}" wx:for-item="food" wx:key="food">
+    <view class='food'>
+      <image src='{{food.merchandisePic}}'></image>
+      <text>{{food.merchandiseName}}</text>
+      <text class='num'>{{food.merchandiseCount}}</text>
+    </view>
+  </block>
+ </view>
+
+  <swiper autoplay="true" interval="5000">
+    <block wx:for="{{banner}}" wx:for-item="item">
+      <swiper-item>
+        <image class="banner" bindtap="bannerRouter" src='{{item.imageUrl}}' data-type='{{item.redirectType}}' data-goal='{{item.redirectGoal}}'></image>
+      </swiper-item>
+    </block>
+  </swiper>
+  <!-- <image class='banner' src='{{banner[0].imageUrl}}' wx:if="{{banner[0].imageUrl.length>0}}" bindtap='bannerTap' data-index="0"></image> -->
+</view>
+<!-- <view class='container' wx:if="{{order!=null}}">
+ <view class='header'>
+    <image src='/images/success.png' class='icon'></image>
+    <view class='result'>购票成功</view>
+    <view class='detail'>{{order.order.dxMovie.movieName}} <text>({{order.order.seats.length}}张)</text></view>
+    <view class='check' bindtap='look'>查看电影票</view>
+    <view class='line'></view>
+ </view>
+ <view>
+  <block wx:for="{{order.merOrder.details}}" wx:for-item="food" wx:key="food">
+    <view class='food'>
+      <image src='{{food.itemCombo.imageUrl}}'></image>
+      <text>{{food.itemCombo.name}}</text>
+      <text class='num'>{{food.number}}</text>
+    </view>
+  </block>
+ </view>
+
+
+ <image class='banner' src='{{banner[0].imageUrl}}'  wx:if="{{banner[0].imageUrl.length>0}}" bindtap='bannerTap' data-index="0"></image>
+</view> -->

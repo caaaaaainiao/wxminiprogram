@@ -1,0 +1,172 @@
+/* pages/share.wxss */
+.container{
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: auto;
+}
+
+.share-fn{
+  width: 100%;
+  position: relative;
+}
+
+.fn-banner{
+  width: 100%;
+  height: 292rpx;
+  position: relative;
+}
+
+.top-img{
+  width: 670rpx;
+  height: 200rpx;
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%);
+  top: 44rpx;
+}
+
+.bg{
+  width: 100%;
+  height: 100%;
+}
+
+.line{
+  width:750rpx;
+  height:1px;
+  background:rgba(238,238,238,1);
+}
+
+.fn-share,.fn-invitation{
+  width: 100%;
+  height: 149rpx;
+  position: relative;
+}
+
+.share-title,.invitation-title{
+  position: absolute;
+  left: 37rpx;
+  top: 33rpx;
+  font-size:36rpx;
+  color:rgba(43,43,43,1);
+}
+
+.share-instructions,.invitation-instructions{
+  position: absolute;
+  left: 38rpx;
+  top: 87rpx;
+  color:rgba(136,136,136,1);
+  font-size:26rpx;
+}
+
+.share-btn>button,.invitation-btn>button{
+  width:300rpx;
+  height:60rpx;
+  background:rgba(236,47,75,1);
+  box-shadow:0px 6px 12px 0px rgba(236,47,75,0.3);
+  border-radius:30rpx;
+  position: absolute;
+  /* right: 41rpx; */
+  top: 45rpx;
+  font-size:26rpx;
+  font-family:PingFang SC;
+  font-weight:500;
+  color:rgba(255,255,255,1);
+  text-align: center;
+  line-height: 60rpx;
+  left: 50%;
+  transform: translate(-50%)
+}
+
+.firends-list{
+  position: relative;
+  width: 100%;
+  height: 1000rpx;
+  overflow: hidden;
+}
+
+.board{
+  width: 673rpx;
+  height: 100%;
+  position: absolute;
+  top: 73rpx;
+  left: 39rpx;
+}
+
+.friend-icon{
+  position: absolute;
+  width: 151rpx;
+  height: 151rpx;
+  left: 50%;
+  transform: translate(-50%);
+  top: 84rpx;
+  border-radius: 50%;
+}
+
+.no-one{
+  color:rgba(170,170,170,1);
+  font-size:26rpx;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+}
+
+.friends-info-list{
+  height: 478rpx;
+  position: absolute;
+  width: 570rpx;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+  font-size:26rpx;
+  color:rgba(43,43,43,1);
+}
+
+.friends-title{
+  height: 100rpx;
+  line-height: 100rpx;
+  width: 100%;
+  border-bottom: 1rpx solid rgba(244,232,229,1);
+}
+
+.friends-info{
+  height: 120rpx;
+  width: 100%;
+  border-bottom: 1rpx solid rgba(244,232,229,1);
+  position: relative;
+}
+
+.friends-info-headUrl{
+  width:80rpx;
+  height:80rpx;
+  border-radius:50%;
+  position: absolute;
+  top: 20rpx;
+  left: 15rpx;
+}
+
+.friends-info-status{
+  height: 60rpx;
+  position: absolute;
+  top: 28rpx;
+  left: 122rpx;
+  display: flex;
+  flex-direction: column;
+}
+
+.friends-info-number{
+  width:180rpx;
+  height:60rpx;
+  border:2rpx solid rgba(204,204,204,1);
+  border-radius:30rpx;
+  line-height: 60rpx;
+  text-align: center;
+  color:rgba(170,170,170,1);
+  font-size:22rpx;
+  position: absolute;
+  right: 0;
+  top: 31rpx;
+}

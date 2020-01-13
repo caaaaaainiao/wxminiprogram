@@ -1,0 +1,95 @@
+/* pages/commentmovie/commentmovie.wxss */
+.contianer{
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: auto;
+}
+.title{
+  width: 100%;
+  height: 110rpx;
+  line-height: 110rpx;
+  font-size: 24rpx;
+  color: #312927;
+  /* text-align: center; */
+  padding-left: 40rpx;
+}
+.area{
+  width: 670rpx;
+  height: 320rpx;
+  background:#EEEEEE;
+  border-radius: 16rpx;
+  margin: 0 auto 50rpx;
+  padding: 15rpx;
+}
+.area textarea{
+  font-size: 24rpx;
+  line-height: 36rpx;
+  color: #312927;
+}
+.pre{
+  width: 100%;
+  height: auto;
+  margin: auto;
+  overflow: hidden;
+  padding-left: 40rpx;
+}
+.text{
+  height: 70rpx;
+  padding: 0 36rpx;
+  line-height: 70rpx;
+  font-size: 24rpx;
+  color: #888888;
+  border: 2rpx solid #888888;
+  float: left;
+  margin-right: 35rpx;
+  margin-bottom: 30rpx;
+  border-radius: 35rpx;
+}
+.select{
+  color: #E04F2E;
+  border: 2rpx solid #E04F2E;
+}
+.btn{
+  width: 540rpx;
+  height: 80rpx;
+  background-size: cover;
+  margin-top: 100rpx;
+}
+
+.content-star {
+  height: 150rpx;
+  width: 450rpx;
+  margin: 20rpx auto 0;
+}
+
+.score {
+  width: 200rpx;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  color: #313131;
+  font-size:24rpx;
+  margin-bottom: 30rpx;
+}
+
+.starList {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.star-image {
+  width: 52rpx;
+  height: 52rpx;
+  position: relative;
+}
+
+.item {
+  position: absolute;
+  width: 26rpx;
+  height: 52rpx;
+}

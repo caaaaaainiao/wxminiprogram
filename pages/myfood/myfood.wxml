@@ -1,0 +1,29 @@
+<!--pages/myfood/myfood.wxml-->
+<!-- 我的小食 -->
+<scroll-view class='container' bindscrolltolower="searchScrollLower" scroll-y="true" wx:if="{{result.length>0}}">
+  <view class='line'></view>
+  <block wx:for="{{result}}" wx:for-item="order" wx:key="order" >
+    <view class='type {{order.status==2?"past":""}}' data-num="{{order.unifiedOrderNo}}" bindtap='toDetail'>
+      <image src='/images/sales.png' class='get'wx:if="{{order.cancelStatus==1}}"></image>
+      <image src='/images/refound.png' class='get'wx:elif="{{order.payStatus==3}}"></image>
+      <image src='/images/got.png' class='get'wx:elif="{{order.deliveryStatus==1}}"></image>
+      <view class='food'>
+        <view class='left'>
+          <view class='shi'>食</view>
+        </view>
+        <view class='right'>
+            <view class='foodname'>{{order.merchandiseNames}}
+            </view>
+        </view>
+        <image src='/images/gray_more.png' class='more'></image>
+        <view class='top'></view>
+        <view class='bottom'></view>
+        <view class='clear'></view>
+      </view>
+    </view>
+  </block>
+</scroll-view>
+<view class='empty' wx:else>
+  <image src='https://whtxcx.oss-cn-hangzhou.aliyuncs.com/min/empty2.png'></image>
+  <view class='emptytext'>亲，没有餐饮哦～</view>
+</view>

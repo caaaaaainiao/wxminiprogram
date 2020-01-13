@@ -1,0 +1,77 @@
+/* pages/exchangeDetail.wxss */
+.container{
+  width: 100%;
+  height: 100%;
+  position: relative;
+  padding: 0rpx 50rpx;
+}
+
+.line{
+  width: 100%;
+  height: 30rpx;
+}
+
+.exchange-list{
+  position: relative;
+  width: 100%;
+  height: 149rpx;
+  border-bottom: 1px solid rgba(223,219,219,1);
+}
+
+.use-integral{
+  position: absolute;
+  left: 11rpx;
+  top: 40rpx;
+  font-size:22rpx;
+  color:rgba(43,43,43,1);
+}
+
+.use-time{
+  font-size:22rpx;
+  color:rgba(136,136,136,1);
+  position: absolute;
+  bottom: 27rpx;
+  left: 11rpx;
+}
+
+.get-goldNum{
+  color: rgba(0,159,255,1);
+  font-size: 40rpx;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  right: 5rpx;
+  bottom: 27rpx;
+}
+
+.paging{
+  width: 650rpx;
+  position: relative;
+  left: 50rpx;
+  display: flex;
+  justify-content: space-around;
+}
+
+.empty{
+  width: 100%;
+  height: 100%;
+  background: #fff;
+  position: relative;
+  overflow: hidden;
+  padding-top: 230rpx;
+}
+
+.empty image{
+  width: 342rpx;
+  height: 255rpx;
+  margin: 0 auto 70rpx;
+  display: block;
+}
+
+.emptytext{
+  width: 100%;
+  font-size: 30rpx;
+  color:#888888;
+  text-align: center;
+  line-height: 1;
+}

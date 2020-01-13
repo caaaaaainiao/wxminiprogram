@@ -1,0 +1,64 @@
+<!--pages/mycoupon/mycoupon.wxml-->
+<!-- <text>pages/mycoupon/mycoupon.wxml</text> -->
+<!-- 我的优惠券 -->
+<scroll-view class='container' scroll-y="true" bindscrolltolower="searchScrollLower">
+  <view class='header'>
+    <text class='addCoupon' bindtap='addCoupon'>+ 添加优惠券</text>
+  </view>
+  <view wx:if="{{result.length>0}}">
+    <block wx:for="{{result}}" wx:for-item="coupon" wx:key="coupon">
+      <view class='coupon {{coupon.status==2?"":"past" }}{{coupon.status==3?"":"past" }}' catchtap='toDetail' data-id='{{coupon.id}}' data-couponid='{{coupon.couponId}}'>
+        <!-- 电影代金券 -->
+        <image src='/images/couponicon2.png' class='icon' wx:if="{{coupon.couponType == 1&&coupon.reduceType == 2}}"></image>
+        <image src='/images/couponicon2.png' class='icon' wx:if="{{coupon.couponType == 1&&coupon.reduceType == 3}}"></image>
+        <image src='/images/couponicon2.png' class='icon' wx:if="{{coupon.couponType == 1&&coupon.reduceType == 4}}"></image>
+        <image src='/images/couponicon2.png' class='icon' wx:if="{{coupon.couponType == 1&&coupon.reduceType == 5}}"></image>
+        <!-- 卖品代金券 -->
+        <image src='/images/couponicon3.png' class='icon' wx:elif="{{coupon.couponType == 2&&coupon.reduceType == 2}}"></image>
+        <!-- 电影兑换券 -->
+        <image src='/images/exticket.png' class='icon' wx:elif="{{coupon.couponType == 1&&coupon.reduceType == 1}}"></image>
+        <!-- 卖品兑换券 -->
+        <image src='/images/exfood.png' class='icon' wx:elif="{{coupon.couponType == 2&&coupon.reduceType == 1}}"></image>
+        <view class='name'>{{coupon.name}}</view>
+        <view class='time' wx:if="{{coupon.couponType == 1&&coupon.reduceType == 2}}">有效期：{{coupon.startTime}}至{{coupon.endTime}}</view>
+        <view class='time' wx:elif="{{coupon.couponType == 1&&coupon.reduceType == 1}}">有效期：{{coupon.startTime}}至{{coupon.endTime}}</view>
+        <view class='time' wx:else>有效期：{{coupon.startTime}}至{{coupon.endTime}}</view>
+        <!-- <view class="scope">{{coupon.couponDesc}}</view> -->
+        <view class='right'>
+          <view class='money' wx:if="{{coupon.reduceType==1}}">
+            <text>1</text>张</view>
+          <view class='money' wx:elif="{{coupon.reduceType == 2 || coupon.reduceType == 3 || coupon.reduceType == 4 || coupon.reduceType == 5}}">
+            <text>{{coupon.discountMoney}}</text>元</view>
+        </view>
+        <view class="bottom">
+          使用规则
+          <image src='/images/in.png' class='showRule'></image>
+          <view class='buy' catchtap='toIndex' data-type="{{coupon.couponType}}" wx:if="{{coupon.status==1&&coupon.couponType==2}}">购买</view>
+          <view class='buy' catchtap='toIndex' data-type="{{coupon.couponType}}" wx:elif="{{coupon.status==1&&coupon.couponType==1}}">购票</view>
+        </view>
+        <image src='/images/conponStatus2.png' wx:if="{{coupon.status==2}}" class='status'></image>
+        <!--已使用 -->
+        <image src='/images/conponStatus.png' wx:if="{{coupon.status==3}}" class='status'></image>
+        <!--已过期 -->
+      </view>
+    </block>
+  </view>
+
+  <view class='empty' wx:else>
+    <image src='https://whtxcx.oss-cn-hangzhou.aliyuncs.com/min/empty3.png'></image>
+    <view class='emptytext'>亲，没有优惠券哦～</view>
+  </view>
+  <!-- 添加券 -->
+  <view class='black' wx:if="{{isAdd}}">
+    <view class='add'>
+      <image class='close' src='/images/close.png' bindtap='closeAdd'></image>
+      <view class="input">
+        <input placeholder-style="color:#888;" bindinput='couponNum' placeholder='请输入兑换码'></input>
+        <image class="scode" src='/images/scode.png' bindtap='getScanCode'></image>
+      </view>
+      <view class='tip'>
+        <text>*</text>兑换码位于纸质优惠券的密码区每个兑换码仅可使用一次</view>
+      <view class='submit' bindtap='submitAdd'>提 交</view>
+    </view>
+  </view>
+</scroll-view>

@@ -1,0 +1,134 @@
+<!--pages/mallDetail.wxml-->
+<!-- <text>pages/mallDetail.wxml</text> -->
+<view id="container">
+  <view class="mall-img">
+    <image src="{{goodsInfo.imageUrl}}"></image>
+  </view>
+  <view class="mall-info">
+    <view class="info-name">
+      {{goodsInfo.name}}
+    </view>
+    <view class="info-price" wx:if="{{goodsInfo.gold && !goodsInfo.money}}">
+      {{goodsInfo.gold}}
+      <image src="/images/my-gold.png" class='item-gold-img'></image>
+    </view>
+    <view class="info-price" wx:elif="{{goodsInfo.money && goodsInfo.gold}}">
+      {{goodsInfo.gold}}
+      <image src="/images/my-gold.png" class='item-gold-img'></image>
+      +￥ {{goodsInfo.money}}
+    </view>
+    <view class="info-price" wx:if="{{!goodsInfo.gold && goodsInfo.money}}">
+      ￥{{goodsInfo.money}}
+    </view>
+    <view class="info-exchange">
+      已兑换 {{goodsInfo.alreadyChangedNumber}}
+    </view>
+  </view>
+  <view class='merchants-info'>
+    <view class='merchants-title'>
+      <view class='line'></view>
+      <view style='color:rgba(49,41,39,1);font-size:30rpx;'>商家信息</view>
+      <view class='line'></view>
+    </view>
+    <view class='merchants-detail'>
+      <view style='color:rgba(49,41,39,1);font-size:28rpx;position: relative;'>{{goodsInfo.cinemaInfo.cinemaName}}</view>
+      <view style="color:rgba(49,41,39,1);font-size:26rpx;position: relative;">营业时间：{{goodsInfo.cinemaInfo.businessHour}}</view>
+      <view style="color:rgba(49,41,39,1);font-size:26rpx;position: relative;" bindtap='phone' data-phone='{{goodsInfo.cinemaInfo.serviceMobile}}'>
+        客服电话：{{goodsInfo.cinemaInfo.serviceMobile}}
+        <view class="cinema-phone-right">
+          <text style="margin-right: 10rpx;">一键拨打</text>
+          <image src='/images/cinema-phone.png'></image>
+        </view>
+      </view>
+      <view wx:if="{{goodsInfo.cinemaInfo.latitude && goodsInfo.cinemaInfo.longitude}}" style="color:rgba(49,41,39,1);font-size:26rpx;position: relative;" bindtap="getLocation">
+        联系地址：{{goodsInfo.cinemaInfo.address}}
+        <view class="cinema-address-right">
+          <text style="margin-right: 10rpx;">一键导航</text>
+          <image src='/images/cinema-address.png'></image>
+        </view>
+      </view>
+      <view wx:else style="color:rgba(49,41,39,1);font-size:26rpx;position: relative;">
+        联系地址：{{goodsInfo.cinemaInfo.address}}
+      </view>
+    </view>
+  </view>
+  <view class='notice-info' style="border-bottom: 1rpx solid rgba(221,221,221,1);">
+    <view class='notice-title'>
+      <view class='line'></view>
+      <view style='color:rgba(49,41,39,1);font-size:30rpx;'>兑换须知</view>
+      <view class='line'></view>
+    </view>
+    <text class='notice-memo'>{{goodsInfo.memo}}</text>
+  </view>
+  <view class='notice-info' style="margin-bottom: 100rpx">
+    <view class='notice-title'>
+      <view class='line'></view>
+      <view style='color:rgba(49,41,39,1);font-size:30rpx;'>商品详情</view>
+      <view class='line'></view>
+    </view>
+    <rich-text nodes="{{nodes}}"></rich-text>
+  </view>
+  <view class="mask" wx:if="{{btn!=0}}">
+    <view class="mall-change" wx:if="{{invite}}">
+      <view class="change-way" wx:if="{{btn!=0}}">
+        <view class="way-top" wx:if="{{btn==1}}">
+          <text>选择取货影院</text>
+          <image src="/images/close.png" class='close' bindtap="close"></image>
+        </view>
+        <view class="way-content" wx:if="{{btn==1}}" style="justify-content: space-bettwen;">
+          <scroll-view class="address-list" wx:if="{{isShow}}" scroll-y='true'>
+            <block wx:for="{{location}}" wx:for-item="place" wx:key="place">
+              <view class='canUse' bindtap='chooseAddress' data-code="{{place.cinemaCode}}" data-name="{{place.cinemaName}}" data-address="{{place.address}}">
+                <view class='place-name'>{{place.cinemaName}}</view>
+                <view class='place-address'>{{place.address}}</view>
+                <image src='/images/gou.png' class='place-choose' wx:if="{{code==place.cinemaCode}}"></image>
+                <view class='place-unchoose' wx:else></view>
+              </view>
+            </block>
+          </scroll-view>
+          <view class='way-store' bindtap="showAddress" wx:if="{{!optionName || !optionAddress}}">
+            <text class="store-name">请选择兑换影院</text>
+          </view>
+          <view class='way-store' bindtap="showAddress" wx:else>
+            <text class="store-name">{{optionName}}</text>
+            <text class="store-address">{{optionAddress}}</text>
+          </view>
+          <image src="/images/pull-down.png" class="pull" bindtap="showAddress" wx:if="{{!chooseAdd}}"></image>
+          <image src="/images/select-down.png" class="pull" bindtap="showAddress" wx:if="{{chooseAdd}}"></image>
+        </view>
+      </view>
+      <view style="position:relative;" bindtap="address" wx:if="{{btn==1}}" disabled="{{addressDisabled}}">
+        <image src="/images/compar-bottom.png" class="quick"></image>
+        <text class="quick-change">确定</text>
+      </view>
+    </view>
+    <view class="mall-change" wx:if="{{mail}}">
+      <view class="change-way">
+        <view class="way-top">
+          <text>本商品仅支持邮寄，请提供收货信息</text>
+          <image src="/images/close.png" class='close' bindtap="close"></image>
+        </view>
+        <view class="way-bottom">
+          <view class="add-info">
+            <input class="add-name" maxlength="20" bindinput="getName" placeholder="收件人姓名"></input>
+            <input class="add-phone" bindinput="getPhone" maxlength="20" placeholder="联系电话"></input>
+          </view>
+          <picker style="width:100%" mode="region" bindchange="bindRegionChange" value="{{region}}">
+            <view class="add-pick">
+              {{region[0]}}，{{region[1]}}，{{region[2]}}
+            </view>
+          </picker>
+          <input class="add-pick" bindinput="getAddress" maxlength="100" placeholder="具体地址"></input>
+        </view>
+      </view>
+      <view style="position:relative;" bindtap="mailChange">
+        <image src="/images/compar-bottom.png" class="quick"></image>
+        <text class="quick-change">确定</text>
+      </view>
+    </view>
+  </view>
+  <view class="mall-change" bindtap="change" wx:if="{{btn==0}}">
+    <image src="/images/compar-bottom.png" class="quick"></image>
+    <text class="quick-change">立即兑换</text>
+  </view>
+</view>

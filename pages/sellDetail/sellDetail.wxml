@@ -1,0 +1,125 @@
+<!--pages/sellDetail/sellDetail.wxml-->
+<!-- <text>pages/sellDetail/sellDetail.wxml</text> -->
+<wxs module="filters" src="../../utils/fixed.wxs"></wxs>
+<view class='container'>
+  <swiper class='bannerbg' autoplay>
+    <block wx:for="{{banner}}" wx:for-item="banner" wx:key="banner">
+      <swiper-item>
+        <image bindtap="bannerRouter" src='{{banner.imageUrl}}' data-type='{{banner.redirectType}}' data-goal='{{banner.redirectGoal}}'></image>
+      </swiper-item>
+    </block>
+  </swiper>
+  <view class='content {{isScroll?"contentscroll":""}}'>
+    <scroll-view class='foodclass' scroll-y>
+      <block wx:for="{{goodsList}}" wx:for-item="goodstitle" wx:key="goodstitle">
+        <view class='foodtitle {{navActive == index?"onkey":""}}' bindtap='chooseType' data-index="{{index}}" wx:if="{{goodstitle.typeName != ''}}" data-id="b{{index}}">
+        <!-- <view class='foodtitle' bindtap='chooseType' data-index="{{index}}" wx:if="{{goodstitle.typeName != ''}}" data-id="b{{index}}"> -->
+          <image src='{{goodstitle.typePic}}'></image>
+          <text>{{goodstitle.typeName}}</text>
+        </view>
+      </block>
+    </scroll-view>
+    <scroll-view class='foodDetail' scroll-y bindscroll="scroll" id='parentTop' scroll-into-view="{{toView}}" scroll-with-animation='true' style="height:{{height}}rpx">
+      <block wx:for="{{goodsList}}" wx:for-item="goodsClass" wx:key="goodsClass">
+        <view class='detailclass' id='b{{index}}' wx:if="{{goodsClass.typeName != ''}}">
+          <image src='/images/dot.png'></image>
+          <text>{{goodsClass.typeName}}</text>
+          <image src='/images/dot.png' class='rotate180'></image>
+        </view>
+        <block wx:for="{{goodsClass.merchandises}}" wx:key="{{index}}" wx:for-item="item">
+          <view class='food'>
+            <image src='{{item.merchandisePic}}' class='foodpic' bindtap="picDetail" data-id="{{item.merchandiseCode}}"></image>
+            <view class='foodname'>
+              {{item.merchandiseName}}
+            </view>
+            <view class='foodprice'>￥{{filters.toFix(item.standardPrice)}}</view>
+            <view class='foodnum {{item.count>0?"width180":""}}'>
+              <image src='/images/minus.png' class='minus' data-id="{{item.merchandiseCode}}" bindtap='minus'></image>
+              <image src='/images/add.png' class='add' data-id="{{item.merchandiseCode}}" bindtap='add'></image>
+              <text>{{item.count}}</text>
+            </view>
+          </view>
+        </block>
+      </block>
+    </scroll-view>
+  </view>
+  <view class='bottom'>
+    <view class='buy' wx:if="{{waitActivity != null || marActivity!= null}}">
+      <block wx:if="{{marActivity == null}}">{{waitActivity.name}}</block>
+      <block wx:else>下单立减
+        <text>{{marActivity.reduceMoney}}元</text>
+      </block>
+      <block wx:if="{{waitActivity != null}}">
+        ，再买
+        <text>{{waitActivity.lackMoney}}元</text>，可减
+        <text>{{waitActivity.reduceMoney}}元</text>
+      </block>
+    </view>
+    <view class='bottom_left' bindtap='showcart'>
+      <image src='/images/foodicon.png'></image>
+      ￥
+      <text>{{filters.toFix(toalPrice)}}</text>
+      <view class='totalnum' wx:if="{{buyNum>0}}">{{buyNum}}</view>
+    </view>
+    <view class='bottom_right' wx:if="{{fullCar}}" bindtap='showcart'>
+      <text>点击查看</text>
+      <image src='/images/next.png'></image>
+    </view>
+    <view class='bottom_right' hidden="{{fullCar}}" bindtap='router'>
+      <text>确定购买</text>
+      <image src='/images/next.png'></image>
+    </view>
+  </view>
+</view>
+
+<view class='mask' wx:if="{{isShow}}">
+  <scroll-view class='picDetail' scroll-y="true">
+    <view style="width:100%;height:100%;">
+      <image bindtap="closeShow" src="/images/picDetail-close.png" class='picDetail-close'></image>
+      <image src="{{picInfo.merchandisePic}}" class='picDetail-img'></image>
+      <view class='picDetail-info'>
+        <view class='picDetail-name'>{{picInfo.merchandiseName}}</view>
+        <view class='picDetail-sale'>销量：{{picInfo.sales}}</view>
+        <view class='picDetail-price'>￥
+          <text>{{picInfo.standardPrice}}</text>
+        </view>
+        <view class='picDetail-count {{picInfo.count>0?"width":""}}'>
+          <image src='/images/minus.png' class='minus' data-id="{{picInfo.merchandiseCode}}" bindtap='minusDetail'></image>
+          <image src='/images/add.png' class='add' data-id="{{picInfo.merchandiseCode}}" bindtap='addDetail'></image>
+          <text>{{picInfo.count}}</text>
+        </view>
+      </view>
+      <view class='picDetail-memo'>{{picInfo.merchandiseDesc}}</view>
+    </view>
+  </scroll-view>
+</view>
+
+<view class='up_full_box' hidden='{{fullCar}}'>
+  <view class='full_shopcar'>
+    <view class='discount' wx:if="{{coupon}}">
+      {{coupon}}
+    </view>
+  </view>
+  <view class='f_title'>
+    <text>已选商品</text>
+    <view class='f_delete' bindtap='emptyCart'>
+      <image src='/images/delete_store.png'></image>
+      <text>清空</text>
+    </view>
+  </view>
+  <view class='f_goodsList' wx:for='{{cartGoods}}' wx:for-item="item" wx:key="{{index}}">
+        <view style="width:360rpx;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">{{item.merchandiseName}}</view>
+        <view class='f_canke_pack'>
+          ￥{{filters.toFix(item.standardPrice*100*item.count/100)}}
+        </view>
+        <view class='f_goodsPrice'>
+          <view class='min_plus1'>
+            <image src='/images/minus.png' data-index="{{index}}" data-id="{{item.merchandiseCode}}" bindtap='minus'></image>
+            <text>{{item.count}}</text>
+            <image src='/images/add.png' data-index="{{index}}" data-id="{{item.merchandiseCode}}" bindtap='add'></image>
+          </view>
+        </view>
+  </view>
+</view>
+<!-- 商品遮罩层top -->
+<view class='goods_cover' hidden='{{fullCar}}' bindtap='hidecart' catchtouchmove="preventD"></view>

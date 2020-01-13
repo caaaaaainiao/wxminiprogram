@@ -1,0 +1,31 @@
+<!--pages/couponDetail/couponDetail.wxml-->
+<!-- <text>pages/couponDetail/couponDetail.wxml</text> -->
+<view class='container'>
+  <view class='header'>
+    <!-- 电影代金券 -->
+    <image src='/images/couponicon2.png' class='icon' wx:if="{{result.couponType == 1&&result.reduceType == 2}}"></image>
+    <!-- 卖品代金券 -->
+    <image src='/images/couponicon3.png' class='icon' wx:elif="{{result.couponType == 2&&result.reduceType == 2}}"></image>
+    <!-- 电影兑换券 -->
+    <image src='/images/exticket.png' class='icon' wx:elif="{{result.couponType == 1&&result.reduceType == 1}}"></image>
+    <!-- 卖品兑换券 -->
+    <image src='/images/exfood.png' class='icon' wx:elif="{{result.couponType == 2&&result.reduceType == 1}}"></image>
+    <view class='name'>{{result.name}}</view>
+    <!-- <view class='scope'>有效期：</view> -->
+    <text class='time' wx:if="{{result.couponType == 1&&result.reduceType == 2}}">生效时间：{{result.startTime}}\n\n失效时间：{{result.endTime}}</text>
+    <text class='time' wx:elif="{{result.couponType == 1&&result.reduceType == 1}}">生效时间：{{result.startTime}}\n\n失效时间：{{result.endTime}}</text>
+    <text class='time' wx:else>生效时间：{{result.startTime}}\n\n失效时间：{{result.endTime}}</text>
+    <view class='money' wx:if="{{result.reduceType == 1}}">
+      <text>1</text>张</view>
+    <view class='money' wx:else>
+      <text>{{result.amount}}</text>元</view>
+  </view>
+  <view class='range' wx:if='{{result.applyCinemaName != null}}'>
+    适用影院
+    <text>{{result.applyCinemaName}}</text>
+  </view>
+  <view class='title'>使用规则</view>
+  <view class='rule'>
+    <text>{{result.couponDesc}}</text>
+  </view>
+</view>

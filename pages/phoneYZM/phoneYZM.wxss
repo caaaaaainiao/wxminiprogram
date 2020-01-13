@@ -1,0 +1,106 @@
+/* pages/phoneYZM.wxss */
+.container{
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  float: left;
+}
+
+.logo{
+  position: relative;
+  width: 279rpx;
+  height: 238rpx;
+  left: 236rpx;
+  top: 81rpx;
+}
+
+.content{
+  position: relative;
+  height: 240rpx;
+  width: 540rpx;
+  left: 105rpx;
+  top: 144rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.content-number{
+  position: relative;
+  height: 120rpx;
+  width: 100%;
+  border-bottom: 1rpx solid rgba(136,136,136,1);
+}
+
+.icon{
+  width: 40rpx;
+  height: 40rpx;
+  position: relative;
+  top: 60rpx;
+  left: 23rpx;
+}
+
+.numberInp{
+  position: relative;
+  bottom: -17rpx;
+  width: 300rpx;
+  left: 100rpx;
+}
+
+.place-holder{
+  text-align: center;
+}
+
+.code{
+  width:150rpx;
+  height:50rpx;
+  border:2rpx solid rgba(236,47,75,1);
+  border-radius:25rpx;
+  font-size: 12px;
+  text-align: center;
+  line-height: 50rpx;
+  color: rgba(236,47,75,1);
+  position: absolute;
+  right: 0;
+  top: 50rpx;
+}
+
+.bg{
+  width: 100%;
+  height: 578rpx;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+.login{
+  width: 540rpx;
+  height: 80rpx;
+  position: absolute;
+  bottom: 188rpx;
+  left: 105rpx;
+}
+
+.img {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(76, 76, 76, 0.5);
+  z-index: 999;
+}
+
+.hiddenImg {
+  position: absolute;
+  top: 50%;
+  /* right:50%;
+   bottom:50%; */
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.hiddenImg image {
+  /* position: absolute; */
+  width: 520rpx;
+  height: 690rpx;
+}

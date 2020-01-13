@@ -1,0 +1,36 @@
+<!--pages/commentmovie/commentmovie.wxml-->
+<!-- <text>pages/commentmovie/commentmovie.wxml</text> -->
+<!-- 评论电影 -->
+<view class='contianer'>
+  <view class="content-star">
+    <view class="score">
+      <view>评分</view>
+      <view style="color:#EC2F4B">{{score}}分</view>
+    </view>
+    <view class="starList">
+      <block wx:for="{{stars}}" wx:for-item="item" wx:key="index">
+        <image class="star-image" src="{{key > item ?(key-item == 0.5?halfSrc:selectedSrc) : normalSrc}}">
+          <view class="item" style="left:0rpx;top:0;" data-key="{{item+0.5}}" bindtap="selectLeft"></view>
+          <view class="item" style="left:26rpx;top:0;" data-key="{{item+1}}" bindtap="selectRight"></view>
+        </image>
+      </block>
+    </view>
+    <!-- <view class="evaluate">
+      <block wx:for="{{evaluate}}" wx:for-item="item" wx:key="index">
+        <view class="{{num==index?'color':''}}">{{item}}</view>
+      </block>
+    </view> -->
+  </view>
+  <view class='title'>喜欢这本影片吗？快留下你的评价：</view>
+  <view class='area'>
+    <textarea value="{{comment}}" placeholder='我来说两句' placeholder-style='color:#aaa;' bindinput='inputText' maxlength="100"></textarea>
+  </view>
+  <view class='pre'> 
+    <block wx:for="{{text}}" wx:for-item="text" wx:key="text">
+      <view class='text' bindtap='select' data-index="{{index}}">{{text.text}}</view>  
+    </block>
+  </view>
+  <view style="width: 100%;text-align:center">
+    <image class='btn' bindtap='submit' src="/images/submitComments.png"></image>
+  </view>
+</view>

@@ -1,0 +1,132 @@
+<!--pages/orderDetail/orderDetail.wxml-->
+<!-- <text>pages/orderDetail/orderDetail.wxml</text> -->
+<!-- 影票订单详情 -->
+<view class='container'>
+  <image src='/images/bannerbg.png' class='bg'></image>
+  <view class='content' style='height:{{height}}'>
+    <view>
+      <view class='movie'>
+        <view class='movieName'>{{order.filmName}}</view>
+        <view class='movieTime'>{{order.showTime}} {{order.filmType}}{{order.deliveryMemo}} {{order.language}}{{order.dimensional}}</view>
+        <view class='movieArea'>{{order.cinemaName}} {{order.screenName}}</view>
+        <view class='seats'>
+          <text>{{order.seatNames}}</text>
+        </view>
+        <image src='{{order.filmImage}}' class='poster'></image>
+      </view>
+      <image src='/images/ddbj.png' class='line'></image>
+      <view class='movieewm'>
+        <view class='title'>{{order.orderStatus == 3 || order.refundStatus == 1 || order.payStatus == 3? '已退票' : '取电影票'}}</view>
+        <image src='{{order.qrCode}}' class='ewm'></image>
+        <view class='ticketnum'>{{order.ticketNum}}张票</view>
+        <view class='number'>取票码
+          <text>{{order.orderStatus == 3 || order.refundStatus == 1 || order.payStatus == 3? 'xxxxxxxx' : order.printNo}}</text>
+        </view>
+        <view class='ticketGot' wx:if="{{order.payStatus == 5}}">
+          <image src='/images/print.png'></image>
+        </view>
+        <view class='ticketGot' wx:if="{{order.payStatus == 3 || order.refundStatus == 1}}">
+          <image src='/images/refunded.png'></image>
+        </view>
+      </view>
+      <image src='/images/ddbj.png' class='line'></image>
+    </view>
+    <view class='foodewm {{order.order==null?"top":""}}' wx:if="{{order.merOrder!=null}}">
+      <view class='title'>取小食</view>
+      <image src='{{order.ticketCollectionUrl}}' class='ewm'></image>
+      <block wx:for="{{order.merOrder.details}}" wx:for-item="detail" wx:key="detail">
+        <view class='food' wx:if="{{detail.itemCombo !=null}}">{{detail.itemCombo.name}}
+          <text>x {{detail.number}}</text>
+        </view>
+        <view class='food' wx:if="{{detail.merchandise !=null}}">{{detail.merchandise.merName}}
+          <text>x {{detail.number}}</text>
+        </view>
+      </block>
+      <view class='number'>领取码
+        <text wx:if="{{order.payStatus == 3}}">xxxxxx</text>
+        <text wx:else>{{order.ticketCollectionCode}}</text>
+      </view>
+      <view class='ticketGot' wx:if="{{order.deliveryStatus == 2}}">
+        <image src='/images/got.png'></image>
+      </view>
+      <view class='ticketGot' wx:if="{{order.payStatus == 3}}">
+        <image src='/images/refunded.png'></image>
+      </view>
+    </view>
+    <image src='/images/ddbj.png' class='line' wx:if="{{order.merOrder!=null}}"></image>
+    <view class='memo' wx:if="{{order.memo}}">
+      <view class='memobox'>
+        <view class='memotitle'>备注</view>
+        <view class='memotext'>{{order.memo}}</view>
+      </view>
+    </view>
+    <view class='other'>
+      <view class='address'>
+        <view class='storename'>{{order.cinemaName}}</view>
+        <view class='storeaddress'>{{order.cinemaAddress}}</view>
+        <image src='/images/phone.png' class='phone' bindtap='phone' data-phone='{{order.cinemaPhone}}'></image>
+      </view>
+      <view class='address'>
+        <view class='storename'>实付金额</view>
+        <view class='money'>{{order.totalActualPrice}}元</view>
+        <view class='descripe'>原价：
+          <text>{{order.totalOriginalPrice}}元</text>
+        </view>
+        <view class='descripe' wx:if="{{order.totalActivityDiscount != 0}}">活动优惠：
+          <text>-{{order.totalActivityDiscount}}元</text>
+        </view>
+        <view class='descripe' wx:if="{{order.totalCouponDiscount != 0}}">优惠券优惠：
+          <text>-{{order.totalCouponDiscount}}元</text>
+        </view>
+        <view class='descripe'>订单号：{{order.orderNo}}
+        </view>
+        <view class='descripe' wx:if="{{order.payTime}}">购买时间：{{order.payTime}}
+        </view>
+        <view class='descripe'>手机号：{{order.mobilePhone}}
+        </view>
+        <view class='descripe' wx:if="{{order.payWay == 0}}">支付方式：微信支付
+        </view>
+        <view class='descripe' wx:if="{{order.payWay == 1}}">支付方式：会员卡支付
+        </view>
+        <view class='descripe' wx:if="{{order.submitMessage != ''}}">退款原因：{{order.submitMessage}}</view>
+      </view>
+      <view class='address' wx:if='{{order.cancelStatus == 1 && order.orderStatus == 6}}'>
+        <view class='storename'>退票金额</view>
+        <view class='money'>{{order.totalRefundPrice}}元</view>
+        <view class='descripe' wx:if="{{order.refundFee > 0}}">
+          退票手续费：
+          <text>{{order.refundFee}}元</text>
+        </view>
+        <view class='descripe'>退票订单号：{{order.orderNo}}
+        </view>
+        <view class='descripe' wx:if="{{order.cancelTime}}">退票时间：{{order.cancelTime}}
+        </view>
+      </view>
+      <view class='address' style=' border: none;'>
+        <view class='storename'>观影须知</view>
+        <view class='descripe'>1.请提前到达影院现场，找到自助取票机，打印纸质电影票，完成取票。</view>
+        <view class='descripe'>2.如现场自助取票机无法打印电影票，请联系影院工作人员处理。</view>
+        <view class='descripe'>3.凭打印好的纸质电影票，检票入场观影。</view>
+      </view>
+      <view class='refunded' wx:if="{{order.refundStatus == 1}}">
+        <image src='/images/refunded.png'></image>
+      </view>
+      <view wx:if="{{order.refundable == 1 && order.refundStatus != 1}}">
+        <button wx:if="{{order.orderStatus == 4}}" class='refund' bindtap='refundbtn'>退票</button>
+      </view>
+    </view>
+  </view>
+  <!-- 确认退票 -->
+  <view class='black' wx:if="{{retreat}}" catchtouchmove='true'>
+    <view class='black_content' wx:if="{{order.refundFee || order.refundFee>0}}">
+      <view class='text'>退票将收取{{order.refundFee}}元服务费</view>
+      <view class='cancel' catchtouchstart='cancel'>不退了</view>
+      <view class='sure' catchtouchstart='refund'>继续退票</view>
+    </view>
+    <view class='black_content' wx:else>
+      <view class='text'>是否退票</view>
+      <view class='cancel' catchtouchstart='cancel'>不退了</view>
+      <view class='sure' catchtouchstart='refund'>继续退票</view>
+    </view>
+  </view>
+</view>

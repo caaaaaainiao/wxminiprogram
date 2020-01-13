@@ -1,0 +1,80 @@
+<!--pages/chooseSeats/chooseSeats.wxml-->
+<!-- <text>pages/chooseSeats/chooseSeats.wxml</text> -->
+<!-- 选座 -->
+<view class='contianer'>
+  <view class='header'>
+    <view class='detail'>{{filmName}}({{time}}){{beginTime}} {{format}}</view>
+    <view class='address'>{{location}}</view>
+  </view>
+  <view class='guest' wx:if="{{text && text !=''}}">
+    <view class="guest-info">{{text}}</view>
+  </view>
+  <view class='explain'>
+    <view>
+      <image src='/images/seat2.png'></image>
+      <text>已选</text>
+    </view>
+    <view>
+      <image src='/images/seat1.png'></image>
+      <text>已售</text>
+    </view>
+    <view>
+      <image src='/images/seat3.png'></image>
+      <text>可选</text>
+    </view>
+    <view>
+      <image src='/images/seat4.png' style='width:66rpx;height:33rpx;'></image>
+      <text>情侣座</text>
+    </view>
+  </view>
+  <view class='room' style='transform:translate({{translateX}}px)'>
+    <text>{{screenName}}</text>
+    <image src='https://whtxcx.oss-cn-hangzhou.aliyuncs.com/min/seatbanner.png'></image>
+  </view>
+  <!-- 弹出提示 -->
+  <view class="popping" wx:if='{{isshow}}'>
+    <view class="icon">
+      <text>!</text>
+    </view>
+    <image class="icon_1" src="/images/selected1.png"></image>
+    <image class="icon_2" src="/images/canselect.png"></image>
+    <image class="icon_3" src="/images/selected1.png"></image>
+    <view class="icon_txt">
+      <text>座位旁边不要留空</text>
+    </view>
+  </view>
+  <!-- 弹出提示 -->
+  <view class='seatArea'>
+    <view class='rownum' style='transform:translateY(-50%) scale({{scale}});margin-top:{{translateY}}px;'>
+      <block wx:for="{{rownum}}" wx:for-item="number" wx:key="number">
+        <view class='num'>{{number}}</view>
+      </block>
+    </view>
+    <view class='seats' style=' transform:translate({{translateX}}px,{{translateY}}px) scale({{scale}})' bindtouchstart="touchstart" catchtouchmove="touchmove" catchtouchend="touchend">
+      <view class='box'>
+        <block wx:for="{{rows}}" wx:for-item="row" wx:key="row">
+          <view class='row'>
+            <block wx:for="{{row.seatList}}" wx:for-item="column" wx:key="column">
+              <view class='column seat {{column.seatType=="N"?"seatMiddle":""}} {{column.seatStatus=="Unavailable"?"selled":""}} {{column.seatType=="L"?"seatLeft":""}} {{column.seatType=="R"?"seatRight":""}} {{column.seatStatus=="Sold"?"selled":""}} {{column.seatStatus=="Booked"?"selled":""}} {{column.seatStatus=="Unavailable"?"selled":""}} {{column.seatStatus=="Locked"?"selled":""}} {{column.seatStatus=="Available"?"available":""}} {{column.groupCode?"unempty":"empty"}} {{column.isSelect?"select":""}}'
+                catchtap='choose' data-code="{{column.seatCode}}" data-status='{{column.seatStatus=="Available"?"available":"sell"}}'>
+              </view>
+            </block>
+          </view>
+        </block>
+      </view>
+
+      <view class='middle'></view>
+    </view>
+  </view>
+  <view class='tickets'>
+    <block wx:for="{{seatArr}}" wx:for-item="seatname" wx:key="seatname">
+      <view class='ticket'>
+        <view class='seatnum'>{{seatname}}</view>
+      </view>
+    </block>
+  </view>
+  <view class='pay' bindtap='sureSeat'>
+  <!-- ￥{{totalPrice !=null?totalPrice:"0"}} -->
+    <text>确认选座</text>
+  </view>
+</view>

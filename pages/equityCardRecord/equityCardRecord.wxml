@@ -1,0 +1,28 @@
+<!--pages/equityCardRecord.wxml-->
+<scroll-view class='container' scroll-y="true" bindscrolltolower="ask" wx:if="{{result.length>0}}">
+  <view class='line'></view>
+  <block wx:for="{{result}}" wx:for-item="record" wx:key="record">
+    <view class='record'>
+      <view class='cardno'>{{record.benefitName}}
+        <text style="font-size: 20rpx;color: #888;" wx:if="{{record.benefitStatus == 0}}">已失效</text>
+        <text style="font-size: 20rpx;color: #009FFF;" wx:if="{{record.benefitStatus == 1}}">生效中</text>
+        <text style="font-size: 20rpx;color: #888;" wx:if="{{record.benefitStatus == 2}}">已作废</text>
+        <text style="font-size: 20rpx;color: #888;" wx:if="{{record.benefitStatus == 3}}">已过期</text>
+        <!-- <text style="font-size: 20rpx;color:#EC2F4B;" wx:if="{{record.benefitStatus == 4}}">待生效</text> -->
+      </view>
+      <view class='time'>有效期：
+        <text>{{record.startDate}} - {{record.endDate}}</text>
+      </view>
+      <view class='money'>
+        <text>{{record.payPrice}}</text>
+       元</view>
+      <view class='money2'>
+        <text>{{record.payTime}}</text>
+      </view>
+    </view>
+  </block>
+</scroll-view>
+<view class='empty' wx:else>
+  <image src='https://whtxcx.oss-cn-hangzhou.aliyuncs.com/min/empty3.png'></image>
+  <view class='emptytext'>亲，还没有购买哦～</view>
+</view>
